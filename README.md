@@ -71,13 +71,18 @@ Dibangun dengan arsitektur **Domain-Driven Design (DDD)** dan **Clean Architectu
 * **Audit Trail Lengkap**: Pencatatan log aktivitas sistem (siapa melakukan apa, modul yang diakses, timestamp, dan IP address) untuk menjamin akuntabilitas data.
 * **Sistem Notifikasi Dalam Aplikasi**: Notifikasi instan saat pengajuan disetujui, jadwal diubah, atau status konseling diperbarui.
 
+### 🏫 7. Manajemen Profil & Identitas Sekolah (Superadmin)
+* **Kustomisasi Identitas Instansi**: Superadmin dapat mengubah nama sekolah, nama portal aplikasi, slogan, NPSN, dan nama kepala sekolah secara fleksibel.
+* **Unggah Logo Resmi**: Mendukung logo kustom sekolah (format PNG, JPG, WEBP, SVG) dengan pratinjau langsung yang terintegrasi ke seluruh halaman publik dan sidebar.
+* **Alamat & Kanal Kontak Terpadu**: Pengaturan alamat lengkap, telepon, WhatsApp layanan BK, email resmi, dan tautan website yang langsung tampil di halaman depan (*Welcome*).
+
 ---
 
 ## 👥 Matriks Peran & Hak Akses
 
 | Peran (Role) | Ruang Lingkup & Wewenang Utama |
 | :--- | :--- |
-| **👑 Superadmin** | Hak akses penuh: manajemen pengguna, konfigurasi role & permission, audit logs, dan pengaturan sistem. |
+| **👑 Superadmin** | Hak akses penuh: manajemen profil & logo sekolah, manajemen pengguna, konfigurasi role & permission, audit logs, dan pengaturan sistem. |
 | **🧑‍🏫 Guru BK** | Manajemen pengajuan bimbingan, persetujuan jadwal, pencatatan rekam rahasia (*confidential*), laporan BK, input pelanggaran & prestasi. |
 | **🏫 Kepala Sekolah** | Monitoring agregat statistik sekolah, evaluasi tren permasalahan siswa, serta rekapitulasi laporan umum (tanpa rekam rahasia). |
 | **👨‍🏫 Wali Kelas** | Pemantauan siswa kelas binaan, melihat riwayat konseling non-rahasia, pencatatan pelanggaran, dan input prestasi siswa kelas. |
@@ -214,6 +219,12 @@ Jalankan perintah ini untuk membuat struktur tabel di MySQL dan mengisi data mas
 php artisan migrate --seed
 ```
 *(Tunggu hingga proses migrasi dan seeding selesai dengan keterangan SUCCESS)*.
+
+#### 8. Buat Tautan Simbolik Berkas (Storage Link)
+Jalankan perintah ini untuk menghubungkan direktori penyimpanan ke folder publik agar file logo sekolah dan lampiran berkas dapat diakses secara publik:
+```bash
+php artisan storage:link
+```
 
 ---
 

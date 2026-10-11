@@ -62,6 +62,7 @@ class RolePermissionSeeder extends Seeder
             ['name' => 'permission.manage', 'group' => 'permission', 'display_name' => 'Kelola Izin Akses', 'description' => 'Mengatur relasi permission dan role'],
 
             ['name' => 'audit_log.view', 'group' => 'audit_log', 'display_name' => 'Lihat Audit Log', 'description' => 'Melihat rekam jejak aktivitas sistem'],
+            ['name' => 'school.manage', 'group' => 'school', 'display_name' => 'Kelola Profil Sekolah', 'description' => 'Mengubah identitas, logo, kontak, dan alamat sekolah'],
 
             // Monitoring scopes
             ['name' => 'monitoring.class', 'group' => 'monitoring', 'display_name' => 'Monitoring Kelas', 'description' => 'Memantau perkembangan siswa di kelas binaan'],

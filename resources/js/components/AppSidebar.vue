@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import {
     BarChart3,
     BookOpen,
@@ -103,6 +103,9 @@ const mainNavItems = computed<NavItem[]>(() => {
     // Administration group
     const adminItems: NavItem[] = [];
 
+    if (can('school.manage')) {
+        adminItems.push({ title: 'Profil Sekolah', href: '/admin/school-profile', icon: School });
+    }
     if (can('user.view')) {
         adminItems.push({ title: 'Pengguna', href: '/users', icon: Users });
     }
@@ -116,7 +119,7 @@ const mainNavItems = computed<NavItem[]>(() => {
     if (adminItems.length > 0) {
         items.push({
             title: 'Administrasi',
-            href: adminItems[0]?.href ?? '/roles',
+            href: adminItems[0]?.href ?? '/admin/school-profile',
             icon: Key,
             children: adminItems,
         });
@@ -125,13 +128,17 @@ const mainNavItems = computed<NavItem[]>(() => {
     return items;
 });
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'SMPN 1 Website',
-        href: '#',
-        icon: School,
-    },
-];
+const footerNavItems = computed<NavItem[]>(() => {
+    const page = usePage();
+    const school = (page.props as any).school || {};
+    return [
+        {
+            title: school.website ? (school.school_name || 'Website Sekolah') : 'Website Sekolah',
+            href: school.website || '#',
+            icon: School,
+        },
+    ];
+});
 </script>
 
 <template>

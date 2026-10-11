@@ -6,12 +6,17 @@ use App\Presentation\Http\Controllers\CounselingController;
 use App\Presentation\Http\Controllers\DashboardController;
 use App\Presentation\Http\Controllers\RoleController;
 use App\Presentation\Http\Controllers\SchoolClassController;
+use App\Presentation\Http\Controllers\SchoolSettingController;
 use App\Presentation\Http\Controllers\StudentController;
 use App\Presentation\Http\Controllers\UserManagementController;
 use App\Presentation\Http\Controllers\ViolationController;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'Welcome')->name('home');
+Route::get('/', function () {
+    return \Inertia\Inertia::render('Welcome', [
+        'school' => \App\Models\SchoolSetting::getSettings(),
+    ]);
+})->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
@@ -49,6 +54,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Administration
     Route::get('admin', function () {
+        if (request()->user()?->can('school.manage')) {
+            return redirect()->route('admin.school-profile.edit');
+        }
         if (request()->user()?->can('role.view')) {
             return redirect()->route('roles.index');
         }
@@ -85,6 +93,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('notifications/read-all', [\App\Presentation\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
 
     Route::get('audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
+    Route::get('admin/school-profile', [SchoolSettingController::class, 'edit'])->name('admin.school-profile.edit');
+    Route::post('admin/school-profile', [SchoolSettingController::class, 'update'])->name('admin.school-profile.update');
 });
 
 require __DIR__ . '/settings.php';

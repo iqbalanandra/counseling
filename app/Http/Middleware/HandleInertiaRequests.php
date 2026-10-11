@@ -43,6 +43,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'name' => config('app.name', 'Sistem Informasi BK'),
+            'school' => \App\Models\SchoolSetting::getSettings(),
             'auth' => [
                 'user' => $user ? [
                     'id' => $user->id,
