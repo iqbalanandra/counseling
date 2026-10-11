@@ -97,108 +97,144 @@ Dibangun dengan arsitektur **Domain-Driven Design (DDD)** dan **Clean Architectu
 | **Autentikasi** | **Laravel Fortify** | Headless authentication backend yang kokoh & aman |
 | **Routing Helper** | **Laravel Wayfinder** | Autogenerasi fungsi routing TypeScript dari route Laravel |
 | **PDF Engine** | **DomPDF** | Ekspor laporan berkas resmi sekolah |
-| **Database Support** | **SQLite / MySQL / MariaDB** | Dukungan fleksibel untuk database lokal maupun produksi |
+| **Database Engine** | **MySQL / MariaDB** | Database relasional untuk penyimpanan data terstruktur & relasi kompleks |
 | **Testing** | **Pest PHP** | Framework pengujian unit & integrasi yang ekspresif |
 
 ---
 
-## 🚀 Panduan Instalasi Sistem
+## 🚀 Panduan Instalasi Sistem (Ramah Pemula)
 
-Pastikan komputer Anda telah memenuhi persyaratan berikut sebelum memulai proses instalasi:
-
-### 📋 Prasyarat Sistem
-* **PHP** `>= 8.3` (Pastikan ekstensi `pdo_sqlite`, `pdo_mysql`, `mbstring`, `fileinfo`, `gd`, `openssl`, `curl` aktif)
-* **Composer** `>= 2.x`
-* **Node.js** `>= 20.x` & **npm** / **pnpm**
-* **Git**
+Ikuti panduan berikut langkah demi langkah untuk menjalankan aplikasi **Konseling-Yu** di komputer lokal (*localhost*) Anda.
 
 ---
 
-### 📥 Langkah-Langkah Penginstallan
+### 💻 Tahap 1: Persiapan Aplikasi di Komputer Anda (Prerequisites)
+
+Sebelum mengunduh proyek ini, pastikan komputer atau laptop Anda sudah terpasang aplikasi-aplikasi pendukung berikut:
+
+1. **Web Server & Database (XAMPP atau Laragon)**
+   * **Laragon** *(Sangat direkomendasikan untuk pengguna Windows)*: Unduh di [laragon.org](https://laragon.org/download/). Sudah otomatis menyediakan PHP, MySQL, Apache, dan Composer.
+   * **XAMPP**: Unduh di [apachefriends.org](https://www.apachefriends.org/) (Pilih versi dengan **PHP 8.3** atau lebih baru).
+   * 👉 *Pastikan service **Apache** dan **MySQL** sudah dinyalakan (*Running*) sebelum melangkah ke tahap berikutnya.*
+
+2. **PHP `>= 8.3`**
+   * Pastikan ekstensi berikut sudah aktif di file `php.ini` Anda:
+     `pdo_mysql`, `mbstring`, `openssl`, `curl`, `fileinfo`, `gd`.
+
+3. **Composer (Manajer Paket PHP)**
+   * Unduh dan pasang dari [getcomposer.org](https://getcomposer.org/download/).
+   * Cek di terminal/CMD: `composer -v`
+
+4. **Node.js & NPM (Runtime Javascript)**
+   * Unduh versi **LTS (minimal v20.x atau terbaru)** dari [nodejs.org](https://nodejs.org/).
+   * Cek di terminal/CMD: `node -v` dan `npm -v`
+
+5. **Git**
+   * Unduh dari [git-scm.com](https://git-scm.com/).
+   * Cek di terminal/CMD: `git -v`
+
+---
+
+### 🛠️ Tahap 2: Siapkan Database MySQL
+
+Sebelum menghubungkan sistem, buat terlebih dahulu wadah database di MySQL:
+
+1. Buka peramban (browser) dan buka **phpMyAdmin** di:
+   👉 `http://localhost/phpmyadmin` (atau gunakan database client seperti *HeidiSQL* / *DBeaver*).
+2. Klik menu **Databases** (Basis Data).
+3. Buat database baru dengan nama:
+   ```text
+   counseling
+   ```
+4. Pilih collation bawaan (misal `utf8mb4_general_ci` atau `utf8mb4_unicode_ci`), lalu klik **Create**.
+
+---
+
+### 📥 Tahap 3: Langkah-Langkah Pemasangan Sistem
+
+Buka **Terminal** (PowerShell / Command Prompt / Git Bash), lalu jalankan perintah berikut secara berurutan:
 
 #### 1. Clone Repository
-Unduh source code proyek ke direktori lokal Anda:
+Unduh source code proyek dari GitHub ke komputer Anda:
 ```bash
 git clone https://github.com/iqbalanandra/counseling.git
+```
+Masuk ke dalam folder proyek:
+```bash
 cd counseling
 ```
 
-#### 2. Pasang Dependensi Backend (PHP)
-Jalankan composer untuk memasang seluruh pustaka Laravel yang diperlukan:
-```bash
-composer install
-```
+#### 2. Salin File Konfigurasi `.env`
+Duplikasi file template konfigurasi menjadi file `.env`:
+* **Windows (PowerShell / Command Prompt):**
+  ```bash
+  copy .env.example .env
+  ```
+* **Linux / macOS / Git Bash:**
+  ```bash
+  cp .env.example .env
+  ```
 
-#### 3. Pasang Dependensi Frontend (Node.js)
-Jalankan npm untuk memasang paket Vue 3, Tailwind CSS, dan komponen pendukung:
-```bash
-npm install
-```
+#### 3. Sesuaikan Konfigurasi Database MySQL di File `.env`
+Buka file `.env` yang baru dibuat menggunakan Text Editor (seperti VS Code atau Notepad), lalu cari bagian konfigurasi database dan ubah menjadi:
 
-#### 4. Salin Berkas Lingkungan (`.env`)
-Salin file konfigurasi `.env.example` menjadi `.env`:
-```bash
-# Windows (PowerShell / Command Prompt)
-copy .env.example .env
-
-# Linux / macOS / Git Bash
-cp .env.example .env
-```
-
-#### 5. Generate Application Encryption Key
-Buat kunci aplikasi Laravel:
-```bash
-php artisan key:generate
-```
-
-#### 6. Konfigurasi Database
-
-Secara default, aplikasi menggunakan database **SQLite** yang praktis tanpa konfigurasi rumit.
-
-##### Opsi A: Menggunakan SQLite (Rekomendasi Cepat & Praktis)
-Pastikan di dalam berkas `.env` terdapat baris:
-```env
-DB_CONNECTION=sqlite
-```
-Kemudian buat berkas database kosong (jika belum dibuat secara otomatis):
-```bash
-# Windows (PowerShell)
-New-Item -ItemType File -Path database\database.sqlite -Force
-
-# Linux / macOS / Git Bash
-touch database/database.sqlite
-```
-
-##### Opsi B: Menggunakan MySQL
-Jika ingin menggunakan MySQL, sesuaikan baris berikut pada berkas `.env`:
 ```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=db_konseling
+DB_DATABASE=counseling
 DB_USERNAME=root
-DB_PASSWORD=password_anda
+DB_PASSWORD=
+```
+> 💡 **Catatan:**
+> * Jika Anda menggunakan **XAMPP / Laragon standar**, username adalah `root` dan password dikosongkan (`DB_PASSWORD=`).
+> * Jika MySQL Anda memiliki kata sandi khusus, masukkan password tersebut pada baris `DB_PASSWORD=`.
+
+#### 4. Pasang Dependensi Backend (PHP)
+Jalankan perintah ini untuk mengunduh semua pustaka Laravel yang diperlukan:
+```bash
+composer install
 ```
 
-#### 7. Jalankan Migrasi & Seeder Database
-Eksekusi migrasi tabel dan masukkan data master awal (Role, Akun Pengguna, Jenis Konseling, Kategori Prestasi & Pelanggaran, serta Data Dummy):
+#### 5. Pasang Dependensi Frontend (Node.js)
+Jalankan perintah ini untuk mengunduh pustaka Vue.js, Tailwind CSS, dan icon:
+```bash
+npm install
+```
+
+#### 6. Buat Kunci Enkripsi Aplikasi (App Key)
+Generate security key untuk sistem Laravel:
+```bash
+php artisan key:generate
+```
+
+#### 7. Eksekusi Migrasi & Seeder ke Database MySQL
+Jalankan perintah ini untuk membuat struktur tabel di MySQL dan mengisi data master serta akun demo secara otomatis:
 ```bash
 php artisan migrate --seed
 ```
+*(Tunggu hingga proses migrasi dan seeding selesai dengan keterangan SUCCESS)*.
 
-#### 8. Jalankan Server Pengembangan
-Jalankan server aplikasi secara terintegrasi (Backend Laravel, Queue Worker, dan Frontend Vite):
+---
+
+### 🌐 Tahap 4: Menjalankan Aplikasi
+
+Jalankan seluruh server pengembangan lokal dengan satu perintah:
 
 ```bash
 composer run dev
 ```
 
-> **Alternatif:** Anda juga dapat menjalankan backend dan frontend di dua jendela terminal terpisah:
+> 📌 **Info:** Perintah di atas akan secara otomatis mengaktifkan server **Laravel**, **Queue Worker**, dan **Vite Frontend** secara bersamaan.
+> 
+> *Alternatif jika ingin membuka di 2 jendela terminal terpisah:*
 > * Terminal 1: `php artisan serve`
 > * Terminal 2: `npm run dev`
 
-Buka peramban (browser) Anda dan akses:
+Buka browser Anda dan akses alamat:
 👉 **[http://localhost:8000](http://localhost:8000)**
+
+Silakan masuk (*login*) menggunakan salah satu akun demo di bawah ini untuk mulai menjelajahi sistem!
 
 ---
 
@@ -289,8 +325,3 @@ Kontribusi selalu disambut dengan baik! Jika Anda memiliki saran perbaikan, fitu
 ## 📄 Lisensi
 
 Proyek ini dilisensikan di bawah lisensi terbuka [MIT License](LICENSE).
-
-<div align="center">
-  <br>
-  <sub>Dikembangkan dengan cinta untuk kemajuan sistem pendidikan dan bimbingan konseling Indonesia. 🇮🇩</sub>
-</div>
