@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Collection;
 
 class Teacher extends Model
 {
@@ -57,7 +57,7 @@ class Teacher extends Model
     {
         $ids = $this->getAllHomeroomClassIds();
         if (empty($ids)) {
-            return new Collection();
+            return new Collection;
         }
 
         return SchoolClass::whereIn('id', $ids)->get();

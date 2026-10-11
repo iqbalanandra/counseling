@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue';
-import { Search, ChevronDown, Check, X, GraduationCap, User, UserCheck } from '@lucide/vue';
+import {
+    Search,
+    ChevronDown,
+    Check,
+    X,
+    GraduationCap,
+    User,
+    UserCheck,
+} from '@lucide/vue';
 
 export interface SearchOption {
     id: number | string;
@@ -30,7 +38,7 @@ const props = withDefaults(
         disabled: false,
         iconType: 'student',
         emptyText: 'Tidak ada data ditemukan',
-    }
+    },
 );
 
 const emit = defineEmits<{
@@ -45,10 +53,18 @@ const searchInputRef = ref<HTMLInputElement | null>(null);
 const highlightedIndex = ref(0);
 
 const selectedOption = computed(() => {
-    if (props.modelValue === null || props.modelValue === undefined || props.modelValue === '') {
+    if (
+        props.modelValue === null ||
+        props.modelValue === undefined ||
+        props.modelValue === ''
+    ) {
         return null;
     }
-    return props.options.find((opt) => String(opt.id) === String(props.modelValue)) || null;
+    return (
+        props.options.find(
+            (opt) => String(opt.id) === String(props.modelValue),
+        ) || null
+    );
 });
 
 const filteredOptions = computed(() => {
@@ -58,9 +74,15 @@ const filteredOptions = computed(() => {
     }
     return props.options.filter((opt) => {
         const nameMatch = opt.name.toLowerCase().includes(q);
-        const idMatch = opt.identifier ? opt.identifier.toLowerCase().includes(q) : false;
-        const subMatch = opt.subtitle ? opt.subtitle.toLowerCase().includes(q) : false;
-        const badgeMatch = opt.badge ? opt.badge.toLowerCase().includes(q) : false;
+        const idMatch = opt.identifier
+            ? opt.identifier.toLowerCase().includes(q)
+            : false;
+        const subMatch = opt.subtitle
+            ? opt.subtitle.toLowerCase().includes(q)
+            : false;
+        const badgeMatch = opt.badge
+            ? opt.badge.toLowerCase().includes(q)
+            : false;
         return nameMatch || idMatch || subMatch || badgeMatch;
     });
 });
@@ -157,14 +179,26 @@ const getInitials = (name: string): string => {
 </script>
 
 <template>
-    <div ref="rootRef" class="relative w-full text-left" @keydown="handleKeyDown">
+    <div
+        ref="rootRef"
+        class="relative w-full text-left"
+        @keydown="handleKeyDown"
+    >
         <!-- Label -->
-        <label v-if="label" class="block text-xs font-semibold text-foreground mb-1.5 flex items-center justify-between">
+        <label
+            v-if="label"
+            class="mb-1.5 block flex items-center justify-between text-xs font-semibold text-foreground"
+        >
             <span>
                 {{ label }}
-                <span v-if="required" class="text-rose-500 font-bold ml-0.5">*</span>
+                <span v-if="required" class="ml-0.5 font-bold text-rose-500"
+                    >*</span
+                >
             </span>
-            <span v-if="selectedOption" class="text-[11px] text-muted-foreground font-normal">
+            <span
+                v-if="selectedOption"
+                class="text-[11px] font-normal text-muted-foreground"
+            >
                 Terpilih: 1
             </span>
         </label>
@@ -174,8 +208,13 @@ const getInitials = (name: string): string => {
             v-if="selectedOption && !isOpen"
             class="group relative flex items-center justify-between gap-3 rounded-2xl border border-indigo-200 bg-indigo-50/40 p-2.5 transition-all hover:border-indigo-300 hover:bg-indigo-50/70 dark:border-indigo-900/50 dark:bg-indigo-950/20 dark:hover:bg-indigo-950/40"
         >
-            <div class="flex items-center gap-3 overflow-hidden cursor-pointer flex-1" @click="openDropdown">
-                <div class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white font-bold text-xs shadow-xs">
+            <div
+                class="flex flex-1 cursor-pointer items-center gap-3 overflow-hidden"
+                @click="openDropdown"
+            >
+                <div
+                    class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-xs font-bold text-white shadow-xs"
+                >
                     <component
                         :is="iconType === 'teacher' ? UserCheck : GraduationCap"
                         class="size-4.5"
@@ -194,23 +233,28 @@ const getInitials = (name: string): string => {
                         </span>
                     </div>
                     <p class="truncate text-xs text-muted-foreground">
-                        {{ selectedOption.subtitle || (selectedOption.identifier ? `ID/NIS: ${selectedOption.identifier}` : 'Telah dipilih') }}
+                        {{
+                            selectedOption.subtitle ||
+                            (selectedOption.identifier
+                                ? `ID/NIS: ${selectedOption.identifier}`
+                                : 'Telah dipilih')
+                        }}
                     </p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-1 shrink-0">
+            <div class="flex shrink-0 items-center gap-1">
                 <button
                     type="button"
                     @click="openDropdown"
-                    class="rounded-lg px-2 py-1 text-xs font-medium text-indigo-600 hover:bg-indigo-100/60 dark:text-indigo-400 dark:hover:bg-indigo-900/40 transition-colors cursor-pointer"
+                    class="cursor-pointer rounded-lg px-2 py-1 text-xs font-medium text-indigo-600 transition-colors hover:bg-indigo-100/60 dark:text-indigo-400 dark:hover:bg-indigo-900/40"
                 >
                     Ganti
                 </button>
                 <button
                     type="button"
                     @click.stop="clearSelection"
-                    class="rounded-lg p-1 text-muted-foreground hover:bg-rose-100 hover:text-rose-600 dark:hover:bg-rose-950/50 dark:hover:text-rose-400 transition-colors cursor-pointer"
+                    class="cursor-pointer rounded-lg p-1 text-muted-foreground transition-colors hover:bg-rose-100 hover:text-rose-600 dark:hover:bg-rose-950/50 dark:hover:text-rose-400"
                     title="Hapus pilihan"
                 >
                     <X class="size-4" />
@@ -223,15 +267,17 @@ const getInitials = (name: string): string => {
             <div
                 @click="toggleDropdown"
                 :class="[
-                    'flex w-full items-center justify-between rounded-2xl border bg-background px-3.5 py-2.5 text-sm transition-all cursor-pointer select-none',
+                    'flex w-full cursor-pointer items-center justify-between rounded-2xl border bg-background px-3.5 py-2.5 text-sm transition-all select-none',
                     isOpen
                         ? 'border-indigo-600 ring-2 ring-indigo-500/20 dark:border-indigo-500'
                         : 'border-border/80 hover:border-neutral-400 dark:hover:border-neutral-600',
-                    disabled ? 'opacity-60 cursor-not-allowed bg-muted/30' : '',
+                    disabled ? 'cursor-not-allowed bg-muted/30 opacity-60' : '',
                     error ? 'border-rose-500 ring-1 ring-rose-500/30' : '',
                 ]"
             >
-                <div class="flex items-center gap-2.5 overflow-hidden text-muted-foreground">
+                <div
+                    class="flex items-center gap-2.5 overflow-hidden text-muted-foreground"
+                >
                     <component
                         :is="iconType === 'teacher' ? User : GraduationCap"
                         class="size-4.5 shrink-0 text-muted-foreground/70"
@@ -242,8 +288,8 @@ const getInitials = (name: string): string => {
                 </div>
                 <ChevronDown
                     :class="[
-                        'size-4 text-muted-foreground transition-transform duration-200 shrink-0',
-                        isOpen ? 'rotate-180 text-foreground' : ''
+                        'size-4 shrink-0 text-muted-foreground transition-transform duration-200',
+                        isOpen ? 'rotate-180 text-foreground' : '',
                     ]"
                 />
             </div>
@@ -260,17 +306,19 @@ const getInitials = (name: string): string => {
         >
             <div
                 v-if="isOpen"
-                class="absolute z-50 mt-1.5 w-full rounded-2xl border border-border bg-white dark:bg-neutral-900 shadow-xl overflow-hidden animate-in fade-in-50"
+                class="absolute z-50 mt-1.5 w-full animate-in overflow-hidden rounded-2xl border border-border bg-white shadow-xl fade-in-50 dark:bg-neutral-900"
             >
                 <!-- Search Filter Input Box -->
-                <div class="border-b border-border/80 p-2.5 bg-muted/30">
+                <div class="border-b border-border/80 bg-muted/30 p-2.5">
                     <div class="relative flex items-center">
-                        <Search class="absolute left-3 size-4 text-muted-foreground pointer-events-none" />
+                        <Search
+                            class="pointer-events-none absolute left-3 size-4 text-muted-foreground"
+                        />
                         <input
                             ref="searchInputRef"
                             v-model="searchQuery"
                             type="text"
-                            class="w-full rounded-xl border border-border bg-background py-1.5 pl-9 pr-8 text-xs text-foreground placeholder:text-muted-foreground focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
+                            class="w-full rounded-xl border border-border bg-background py-1.5 pr-8 pl-9 text-xs text-foreground placeholder:text-muted-foreground focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none"
                             :placeholder="`Ketik nama atau ${iconType === 'teacher' ? 'NIP' : 'NIS'}...`"
                             @click.stop
                         />
@@ -278,7 +326,7 @@ const getInitials = (name: string): string => {
                             v-if="searchQuery"
                             type="button"
                             @click.stop="searchQuery = ''"
-                            class="absolute right-2.5 text-muted-foreground hover:text-foreground cursor-pointer"
+                            class="absolute right-2.5 cursor-pointer text-muted-foreground hover:text-foreground"
                         >
                             <X class="size-3.5" />
                         </button>
@@ -286,28 +334,30 @@ const getInitials = (name: string): string => {
                 </div>
 
                 <!-- Options List -->
-                <div class="max-h-60 overflow-y-auto p-1.5 space-y-0.5 divide-y divide-border/30">
+                <div
+                    class="max-h-60 space-y-0.5 divide-y divide-border/30 overflow-y-auto p-1.5"
+                >
                     <div
                         v-for="(option, idx) in filteredOptions"
                         :key="option.id"
                         @click.stop="selectOption(option)"
                         :class="[
-                            'group flex items-center justify-between gap-2.5 rounded-xl px-3 py-2 text-xs transition-colors cursor-pointer',
+                            'group flex cursor-pointer items-center justify-between gap-2.5 rounded-xl px-3 py-2 text-xs transition-colors',
                             String(modelValue) === String(option.id)
-                                ? 'bg-indigo-50 text-indigo-900 dark:bg-indigo-950/60 dark:text-indigo-200 font-semibold'
+                                ? 'bg-indigo-50 font-semibold text-indigo-900 dark:bg-indigo-950/60 dark:text-indigo-200'
                                 : idx === highlightedIndex
-                                ? 'bg-muted/80 text-foreground'
-                                : 'text-foreground hover:bg-muted/50'
+                                  ? 'bg-muted/80 text-foreground'
+                                  : 'text-foreground hover:bg-muted/50',
                         ]"
                     >
-                        <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                        <div class="flex min-w-0 flex-1 items-center gap-2.5">
                             <!-- Initials Avatar -->
                             <div
                                 :class="[
-                                    'flex size-8 shrink-0 items-center justify-center rounded-lg font-bold text-[11px]',
+                                    'flex size-8 shrink-0 items-center justify-center rounded-lg text-[11px] font-bold',
                                     String(modelValue) === String(option.id)
                                         ? 'bg-indigo-600 text-white'
-                                        : 'bg-muted text-foreground group-hover:bg-indigo-100 group-hover:text-indigo-700 dark:group-hover:bg-indigo-950'
+                                        : 'bg-muted text-foreground group-hover:bg-indigo-100 group-hover:text-indigo-700 dark:group-hover:bg-indigo-950',
                                 ]"
                             >
                                 {{ getInitials(option.name) }}
@@ -315,18 +365,27 @@ const getInitials = (name: string): string => {
 
                             <div class="min-w-0 flex-1">
                                 <div class="flex items-center gap-1.5">
-                                    <p class="truncate font-semibold text-foreground text-xs">
+                                    <p
+                                        class="truncate text-xs font-semibold text-foreground"
+                                    >
                                         {{ option.name }}
                                     </p>
                                     <span
                                         v-if="option.badge"
-                                        class="shrink-0 rounded px-1.5 py-0.2 text-[9px] font-bold bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
+                                        class="py-0.2 shrink-0 rounded bg-neutral-100 px-1.5 text-[9px] font-bold text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
                                     >
                                         {{ option.badge }}
                                     </span>
                                 </div>
-                                <p class="truncate text-[11px] text-muted-foreground mt-0.5">
-                                    {{ option.subtitle || (option.identifier ? `No: ${option.identifier}` : '') }}
+                                <p
+                                    class="mt-0.5 truncate text-[11px] text-muted-foreground"
+                                >
+                                    {{
+                                        option.subtitle ||
+                                        (option.identifier
+                                            ? `No: ${option.identifier}`
+                                            : '')
+                                    }}
                                 </p>
                             </div>
                         </div>
@@ -341,10 +400,12 @@ const getInitials = (name: string): string => {
                     <!-- Empty state -->
                     <div
                         v-if="filteredOptions.length === 0"
-                        class="p-6 text-center text-xs text-muted-foreground flex flex-col items-center gap-1.5"
+                        class="flex flex-col items-center gap-1.5 p-6 text-center text-xs text-muted-foreground"
                     >
-                        <Search class="size-5 text-muted-foreground/50 mb-1" />
-                        <p class="font-medium text-foreground">{{ emptyText }}</p>
+                        <Search class="mb-1 size-5 text-muted-foreground/50" />
+                        <p class="font-medium text-foreground">
+                            {{ emptyText }}
+                        </p>
                         <p class="text-[11px] text-muted-foreground">
                             Tidak ditemukan hasil untuk "{{ searchQuery }}"
                         </p>
@@ -354,7 +415,7 @@ const getInitials = (name: string): string => {
         </Transition>
 
         <!-- Error Message -->
-        <p v-if="error" class="mt-1 text-xs text-rose-500 font-medium">
+        <p v-if="error" class="mt-1 text-xs font-medium text-rose-500">
             {{ error }}
         </p>
     </div>

@@ -6,6 +6,10 @@ use App\Application\UseCases\User\CreateUserUseCase;
 use App\Application\UseCases\User\UpdateUserUseCase;
 use App\Domain\Role\Repositories\RoleRepositoryInterface;
 use App\Domain\User\Repositories\UserRepositoryInterface;
+use App\Models\Role;
+use App\Models\SchoolClass;
+use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -31,7 +35,7 @@ class UserManagementController extends Controller
             role: $request->query('role')
         );
 
-        $classes = \App\Models\SchoolClass::orderBy('grade')->orderBy('name')->get()->map(fn ($c) => [
+        $classes = SchoolClass::orderBy('grade')->orderBy('name')->get()->map(fn ($c) => [
             'id' => $c->id,
             'name' => $c->name,
             'grade' => $c->grade,
@@ -63,7 +67,7 @@ class UserManagementController extends Controller
 
         $user = $this->userRepository->findById($user->id);
 
-        $classes = \App\Models\SchoolClass::orderBy('grade')->orderBy('name')->get()->map(fn ($c) => [
+        $classes = SchoolClass::orderBy('grade')->orderBy('name')->get()->map(fn ($c) => [
             'id' => $c->id,
             'name' => $c->name,
             'grade' => $c->grade,
@@ -116,10 +120,10 @@ class UserManagementController extends Controller
 
         // Role checks
         $roleIds = $validated['role_ids'] ?? [];
-        $waliKelasRoleId = \App\Models\Role::where('name', 'Wali Kelas')->value('id');
-        $siswaRoleId = \App\Models\Role::where('name', 'Siswa')->value('id');
-        $guruBkRoleId = \App\Models\Role::where('name', 'Guru BK')->value('id');
-        $kepalaRoleId = \App\Models\Role::where('name', 'Kepala Sekolah')->value('id');
+        $waliKelasRoleId = Role::where('name', 'Wali Kelas')->value('id');
+        $siswaRoleId = Role::where('name', 'Siswa')->value('id');
+        $guruBkRoleId = Role::where('name', 'Guru BK')->value('id');
+        $kepalaRoleId = Role::where('name', 'Kepala Sekolah')->value('id');
 
         $isWaliKelas = in_array($waliKelasRoleId, $roleIds);
         $isSiswa = in_array($siswaRoleId, $roleIds);
@@ -127,8 +131,8 @@ class UserManagementController extends Controller
         $isKepala = in_array($kepalaRoleId, $roleIds);
 
         // Wali Kelas profile and classes sync
-        if ($isWaliKelas || !empty($validated['class_ids'])) {
-            $teacher = \App\Models\Teacher::firstOrCreate(
+        if ($isWaliKelas || ! empty($validated['class_ids'])) {
+            $teacher = Teacher::firstOrCreate(
                 ['user_id' => $user->id],
                 [
                     'name' => $user->name,
@@ -142,11 +146,11 @@ class UserManagementController extends Controller
             $classIds = $validated['class_ids'] ?? [];
             $teacher->homeroomClasses()->sync($classIds);
 
-            if (!empty($classIds)) {
-                \App\Models\SchoolClass::whereIn('id', $classIds)->update(['homeroom_teacher_id' => $teacher->id]);
+            if (! empty($classIds)) {
+                SchoolClass::whereIn('id', $classIds)->update(['homeroom_teacher_id' => $teacher->id]);
             }
         } elseif ($isGuruBk || $isKepala) {
-            \App\Models\Teacher::firstOrCreate(
+            Teacher::firstOrCreate(
                 ['user_id' => $user->id],
                 [
                     'name' => $user->name,
@@ -161,8 +165,8 @@ class UserManagementController extends Controller
         // Siswa profile sync
         if ($isSiswa) {
             $student = null;
-            if (!empty($validated['identifier_number'])) {
-                $student = \App\Models\Student::where('nis', $validated['identifier_number'])->first();
+            if (! empty($validated['identifier_number'])) {
+                $student = Student::where('nis', $validated['identifier_number'])->first();
             }
 
             if ($student) {
@@ -173,9 +177,9 @@ class UserManagementController extends Controller
                     'gender' => $validated['gender'] ?? $student->gender,
                 ]);
             } else {
-                \App\Models\Student::create([
+                Student::create([
                     'user_id' => $user->id,
-                    'nis' => $validated['identifier_number'] ?? ('S' . str_pad((string) $user->id, 6, '0', STR_PAD_LEFT)),
+                    'nis' => $validated['identifier_number'] ?? ('S'.str_pad((string) $user->id, 6, '0', STR_PAD_LEFT)),
                     'name' => $user->name,
                     'gender' => $validated['gender'] ?? 'L',
                     'class_id' => $validated['student_class_id'] ?? null,
@@ -210,10 +214,10 @@ class UserManagementController extends Controller
 
         // Role checks
         $roleIds = $validated['role_ids'] ?? [];
-        $waliKelasRoleId = \App\Models\Role::where('name', 'Wali Kelas')->value('id');
-        $siswaRoleId = \App\Models\Role::where('name', 'Siswa')->value('id');
-        $guruBkRoleId = \App\Models\Role::where('name', 'Guru BK')->value('id');
-        $kepalaRoleId = \App\Models\Role::where('name', 'Kepala Sekolah')->value('id');
+        $waliKelasRoleId = Role::where('name', 'Wali Kelas')->value('id');
+        $siswaRoleId = Role::where('name', 'Siswa')->value('id');
+        $guruBkRoleId = Role::where('name', 'Guru BK')->value('id');
+        $kepalaRoleId = Role::where('name', 'Kepala Sekolah')->value('id');
 
         $isWaliKelas = in_array($waliKelasRoleId, $roleIds);
         $isSiswa = in_array($siswaRoleId, $roleIds);
@@ -221,8 +225,8 @@ class UserManagementController extends Controller
         $isKepala = in_array($kepalaRoleId, $roleIds);
 
         // Wali Kelas / Teacher Sync
-        if ($isWaliKelas || !empty($validated['class_ids'])) {
-            $teacher = \App\Models\Teacher::firstOrCreate(
+        if ($isWaliKelas || ! empty($validated['class_ids'])) {
+            $teacher = Teacher::firstOrCreate(
                 ['user_id' => $user->id],
                 [
                     'name' => $user->name,
@@ -236,14 +240,14 @@ class UserManagementController extends Controller
             $classIds = $validated['class_ids'] ?? [];
             $teacher->homeroomClasses()->sync($classIds);
 
-            if (!empty($classIds)) {
-                \App\Models\SchoolClass::whereIn('id', $classIds)->update(['homeroom_teacher_id' => $teacher->id]);
+            if (! empty($classIds)) {
+                SchoolClass::whereIn('id', $classIds)->update(['homeroom_teacher_id' => $teacher->id]);
             }
-            \App\Models\SchoolClass::where('homeroom_teacher_id', $teacher->id)
+            SchoolClass::where('homeroom_teacher_id', $teacher->id)
                 ->whereNotIn('id', $classIds)
                 ->update(['homeroom_teacher_id' => null]);
         } elseif ($isGuruBk || $isKepala) {
-            \App\Models\Teacher::firstOrCreate(
+            Teacher::firstOrCreate(
                 ['user_id' => $user->id],
                 [
                     'name' => $user->name,
@@ -253,9 +257,9 @@ class UserManagementController extends Controller
                     'position' => $isGuruBk ? 'Guru BK' : 'Kepala Sekolah',
                 ]
             );
-        } elseif (!$isWaliKelas && $user->teacher) {
+        } elseif (! $isWaliKelas && $user->teacher) {
             $user->teacher->homeroomClasses()->sync([]);
-            \App\Models\SchoolClass::where('homeroom_teacher_id', $user->teacher->id)->update(['homeroom_teacher_id' => null]);
+            SchoolClass::where('homeroom_teacher_id', $user->teacher->id)->update(['homeroom_teacher_id' => null]);
         }
 
         // Siswa sync
@@ -268,9 +272,9 @@ class UserManagementController extends Controller
                     'nis' => $validated['identifier_number'] ?? $user->student->nis,
                 ]);
             } else {
-                \App\Models\Student::create([
+                Student::create([
                     'user_id' => $user->id,
-                    'nis' => $validated['identifier_number'] ?? ('S' . str_pad((string) $user->id, 6, '0', STR_PAD_LEFT)),
+                    'nis' => $validated['identifier_number'] ?? ('S'.str_pad((string) $user->id, 6, '0', STR_PAD_LEFT)),
                     'name' => $user->name,
                     'gender' => $validated['gender'] ?? 'L',
                     'class_id' => $validated['student_class_id'] ?? null,

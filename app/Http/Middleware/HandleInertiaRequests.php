@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\SchoolSetting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -43,7 +44,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'name' => config('app.name', 'Sistem Informasi BK'),
-            'school' => \App\Models\SchoolSetting::getSettings(),
+            'school' => SchoolSetting::getSettings(),
             'auth' => [
                 'user' => $user ? [
                     'id' => $user->id,

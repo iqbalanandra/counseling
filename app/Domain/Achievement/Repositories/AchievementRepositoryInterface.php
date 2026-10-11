@@ -3,7 +3,6 @@
 namespace App\Domain\Achievement\Repositories;
 
 use App\Models\Achievement;
-use App\Models\AchievementCategory;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 

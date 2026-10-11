@@ -6,11 +6,12 @@ use App\Domain\Achievement\Repositories\AchievementRepositoryInterface;
 use App\Domain\Counseling\Repositories\CounselingRepositoryInterface;
 use App\Domain\Student\Repositories\StudentRepositoryInterface;
 use App\Domain\Violation\Repositories\ViolationRepositoryInterface;
-use App\Models\AcademicYear;
-use App\Models\AuditLog;
+use App\Models\Achievement;
 use App\Models\CounselingRequest;
+use App\Models\CounselingSession;
+use App\Models\SchoolClass;
 use App\Models\Student;
-use Illuminate\Http\Request;
+use App\Models\Violation;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -30,11 +31,11 @@ class DashboardController extends Controller
 
         $user = Auth::user();
 
-        if ($user->hasRole('Siswa') && !$user->isSuperAdmin()) {
+        if ($user->hasRole('Siswa') && ! $user->isSuperAdmin()) {
             return $this->studentDashboard($user);
         }
 
-        if ($user->hasRole('Wali Kelas') && !$user->isSuperAdmin()) {
+        if ($user->hasRole('Wali Kelas') && ! $user->isSuperAdmin()) {
             return $this->waliKelasDashboard($user);
         }
 
@@ -57,7 +58,7 @@ class DashboardController extends Controller
     {
         $student = $this->studentRepository->findByUserId($user->id);
 
-        if (!$student) {
+        if (! $student) {
             return Inertia::render('Dashboard', [
                 'stats' => [],
                 'role' => 'siswa',
@@ -79,7 +80,7 @@ class DashboardController extends Controller
                 'scheduled_datetime' => $r->scheduled_datetime?->toDateTimeString(),
             ]);
 
-        $sessions = \App\Models\CounselingSession::where('student_id', $student->id)
+        $sessions = CounselingSession::where('student_id', $student->id)
             ->with(['student.schoolClass', 'counselor', 'counselingType'])
             ->orderBy('session_date', 'asc')
             ->get();
@@ -98,7 +99,7 @@ class DashboardController extends Controller
             'scheduleScope' => 'Jadwal Konseling Saya',
             'stats' => [
                 'pending_requests' => CounselingRequest::where('student_id', $student->id)->where('status', 'pending')->count(),
-                'today_sessions' => \App\Models\CounselingSession::where('student_id', $student->id)
+                'today_sessions' => CounselingSession::where('student_id', $student->id)
                     ->where('status', 'scheduled')
                     ->whereDate('session_date', today())
                     ->count(),
@@ -122,13 +123,13 @@ class DashboardController extends Controller
             ]);
         }
 
-        $classes = \App\Models\SchoolClass::whereIn('id', $homeroomClassIds)->get();
+        $classes = SchoolClass::whereIn('id', $homeroomClassIds)->get();
         $classNames = $classes->pluck('name')->join(', ');
 
-        $students = \App\Models\Student::whereIn('class_id', $homeroomClassIds)->get();
+        $students = Student::whereIn('class_id', $homeroomClassIds)->get();
         $studentIds = $students->pluck('id');
 
-        $sessions = \App\Models\CounselingSession::whereIn('student_id', $studentIds)
+        $sessions = CounselingSession::whereIn('student_id', $studentIds)
             ->with(['student.schoolClass', 'counselor', 'counselingType'])
             ->orderBy('session_date', 'asc')
             ->get();
@@ -157,12 +158,12 @@ class DashboardController extends Controller
             'stats' => [
                 'total_students' => $students->count(),
                 'pending_counseling' => CounselingRequest::whereIn('student_id', $studentIds)->where('status', 'pending')->count(),
-                'today_sessions' => \App\Models\CounselingSession::whereIn('student_id', $studentIds)
+                'today_sessions' => CounselingSession::whereIn('student_id', $studentIds)
                     ->where('status', 'scheduled')
                     ->whereDate('session_date', today())
                     ->count(),
-                'total_violations' => \App\Models\Violation::whereIn('student_id', $studentIds)->sum('points'),
-                'total_achievements' => \App\Models\Achievement::whereIn('student_id', $studentIds)->where('verification_status', 'verified')->count(),
+                'total_violations' => Violation::whereIn('student_id', $studentIds)->sum('points'),
+                'total_achievements' => Achievement::whereIn('student_id', $studentIds)->where('verification_status', 'verified')->count(),
             ],
             'students' => $students->take(8)->map(fn ($s) => [
                 'id' => $s->id,
@@ -176,7 +177,7 @@ class DashboardController extends Controller
 
     private function superadminDashboard($user): Response
     {
-        $sessions = \App\Models\CounselingSession::with(['student.schoolClass', 'counselor', 'counselingType'])
+        $sessions = CounselingSession::with(['student.schoolClass', 'counselor', 'counselingType'])
             ->orderBy('session_date', 'asc')
             ->get();
 
@@ -200,15 +201,15 @@ class DashboardController extends Controller
             'scheduleScope' => 'Seluruh Jadwal Sekolah (Akses Penuh Superadmin)',
             'stats' => [
                 'pending_requests' => CounselingRequest::where('status', 'pending')->count(),
-                'today_sessions' => \App\Models\CounselingSession::where('status', 'scheduled')
+                'today_sessions' => CounselingSession::where('status', 'scheduled')
                     ->whereDate('session_date', today())
                     ->count(),
                 'total_students' => Student::where('status', 'active')->count(),
                 'total_counseling_this_month' => CounselingRequest::where('status', 'completed')
                     ->whereMonth('updated_at', now()->month)
                     ->count(),
-                'total_violations' => \App\Models\Violation::count(),
-                'total_achievements' => \App\Models\Achievement::where('verification_status', 'verified')->count(),
+                'total_violations' => Violation::count(),
+                'total_achievements' => Achievement::where('verification_status', 'verified')->count(),
             ],
             'recentRequests' => $recentRequests,
         ]);
@@ -216,7 +217,7 @@ class DashboardController extends Controller
 
     private function guruBkDashboard($user): Response
     {
-        $sessions = \App\Models\CounselingSession::with(['student.schoolClass', 'counselor', 'counselingType'])
+        $sessions = CounselingSession::with(['student.schoolClass', 'counselor', 'counselingType'])
             ->orderBy('session_date', 'asc')
             ->get();
 
@@ -240,7 +241,7 @@ class DashboardController extends Controller
             'scheduleScope' => 'Jadwal Bimbingan Konseling (Guru BK)',
             'stats' => [
                 'pending_requests' => CounselingRequest::where('status', 'pending')->count(),
-                'today_sessions' => \App\Models\CounselingSession::where('status', 'scheduled')
+                'today_sessions' => CounselingSession::where('status', 'scheduled')
                     ->whereDate('session_date', today())
                     ->count(),
                 'total_students' => Student::where('status', 'active')->count(),
@@ -254,7 +255,7 @@ class DashboardController extends Controller
 
     private function kepalaSekolahDashboard($user): Response
     {
-        $sessions = \App\Models\CounselingSession::with(['student.schoolClass', 'counselor', 'counselingType'])
+        $sessions = CounselingSession::with(['student.schoolClass', 'counselor', 'counselingType'])
             ->orderBy('session_date', 'asc')
             ->get();
 
@@ -264,12 +265,12 @@ class DashboardController extends Controller
             'scheduleScope' => 'Monitoring Seluruh Jadwal Sekolah',
             'stats' => [
                 'total_students' => Student::where('status', 'active')->count(),
-                'today_sessions' => \App\Models\CounselingSession::where('status', 'scheduled')
+                'today_sessions' => CounselingSession::where('status', 'scheduled')
                     ->whereDate('session_date', today())
                     ->count(),
                 'total_counseling' => CounselingRequest::where('status', 'completed')->count(),
-                'total_violations' => \App\Models\Violation::count(),
-                'total_achievements' => \App\Models\Achievement::where('verification_status', 'verified')->count(),
+                'total_violations' => Violation::count(),
+                'total_achievements' => Achievement::where('verification_status', 'verified')->count(),
             ],
         ]);
     }

@@ -2,8 +2,8 @@
 
 namespace App\Presentation\Http\Controllers;
 
-use App\Domain\Student\Repositories\StudentRepositoryInterface;
 use App\Domain\SchoolClass\Repositories\SchoolClassRepositoryInterface;
+use App\Domain\Student\Repositories\StudentRepositoryInterface;
 use App\Models\Student;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -63,7 +63,7 @@ class StudentController extends Controller
         $user = Auth::user();
         if ($user->isWaliKelasOnly()) {
             $allowedClassIds = $user->getHomeroomClassIds();
-            if (!in_array($student->class_id, $allowedClassIds, false)) {
+            if (! in_array($student->class_id, $allowedClassIds, false)) {
                 abort(403, 'Anda tidak memiliki hak akses untuk melihat data siswa di luar kelas yang Anda walikan.');
             }
         }

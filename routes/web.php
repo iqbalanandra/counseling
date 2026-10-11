@@ -1,9 +1,12 @@
 <?php
 
+use App\Models\SchoolSetting;
 use App\Presentation\Http\Controllers\AchievementController;
 use App\Presentation\Http\Controllers\AuditLogController;
 use App\Presentation\Http\Controllers\CounselingController;
 use App\Presentation\Http\Controllers\DashboardController;
+use App\Presentation\Http\Controllers\NotificationController;
+use App\Presentation\Http\Controllers\ReportController;
 use App\Presentation\Http\Controllers\RoleController;
 use App\Presentation\Http\Controllers\SchoolClassController;
 use App\Presentation\Http\Controllers\SchoolSettingController;
@@ -11,10 +14,11 @@ use App\Presentation\Http\Controllers\StudentController;
 use App\Presentation\Http\Controllers\UserManagementController;
 use App\Presentation\Http\Controllers\ViolationController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', function () {
-    return \Inertia\Inertia::render('Welcome', [
-        'school' => \App\Models\SchoolSetting::getSettings(),
+    return Inertia::render('Welcome', [
+        'school' => SchoolSetting::getSettings(),
     ]);
 })->name('home');
 
@@ -66,6 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         if (request()->user()?->can('audit_log.view')) {
             return redirect()->route('audit-logs.index');
         }
+
         return redirect()->route('dashboard');
     })->name('admin');
 
@@ -85,17 +90,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     // Reports
-    Route::get('reports', [\App\Presentation\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
-    Route::get('reports/export-pdf', [\App\Presentation\Http\Controllers\ReportController::class, 'exportPdf'])->name('reports.export-pdf');
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('reports/export-pdf', [ReportController::class, 'exportPdf'])->name('reports.export-pdf');
 
     // Notifications
-    Route::post('notifications/{notification}/read', [\App\Presentation\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
-    Route::post('notifications/read-all', [\App\Presentation\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::post('notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
 
     Route::get('audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
     Route::get('admin/school-profile', [SchoolSettingController::class, 'edit'])->name('admin.school-profile.edit');
     Route::post('admin/school-profile', [SchoolSettingController::class, 'update'])->name('admin.school-profile.update');
 });
 
-require __DIR__ . '/settings.php';
-
+require __DIR__.'/settings.php';

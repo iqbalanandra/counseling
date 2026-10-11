@@ -29,12 +29,16 @@ const { state, setOpen, isMobile, setOpenMobile } = useSidebar();
 const { isCurrentUrl, isCurrentOrParentUrl } = useCurrentUrl();
 
 const isItemActive = (item: NavItem): boolean => {
-    if (item.href !== '#' && item.href !== '/admin' && isCurrentOrParentUrl(item.href)) {
+    if (
+        item.href !== '#' &&
+        item.href !== '/admin' &&
+        isCurrentOrParentUrl(item.href)
+    ) {
         return true;
     }
     if (item.children && item.children.length > 0) {
-        return item.children.some((child) => 
-            child.href !== '#' && isCurrentOrParentUrl(child.href)
+        return item.children.some(
+            (child) => child.href !== '#' && isCurrentOrParentUrl(child.href),
         );
     }
     return false;
@@ -61,12 +65,16 @@ watch(
     () => props.items,
     () => {
         props.items.forEach((item) => {
-            if (item.children && item.children.length > 0 && isItemActive(item)) {
+            if (
+                item.children &&
+                item.children.length > 0 &&
+                isItemActive(item)
+            ) {
                 openMap.value[item.title] = true;
             }
         });
     },
-    { deep: true }
+    { deep: true },
 );
 
 // When a menu with children is clicked while the sidebar is collapsed:
@@ -88,7 +96,9 @@ const handleTriggerClick = (item: NavItem) => {
 
 <template>
     <SidebarGroup class="px-2.5 py-1">
-        <SidebarGroupLabel class="text-[11px] font-bold uppercase tracking-wider text-muted-foreground/70 px-2 mb-1">
+        <SidebarGroupLabel
+            class="mb-1 px-2 text-[11px] font-bold tracking-wider text-muted-foreground/70 uppercase"
+        >
             Menu Utama
         </SidebarGroupLabel>
         <SidebarMenu class="gap-1.5">
@@ -101,30 +111,50 @@ const handleTriggerClick = (item: NavItem) => {
                     class="group/collapsible"
                 >
                     <SidebarMenuItem>
-                        <CollapsibleTrigger as-child @click="handleTriggerClick(item)">
+                        <CollapsibleTrigger
+                            as-child
+                            @click="handleTriggerClick(item)"
+                        >
                             <SidebarMenuButton
                                 :tooltip="item.title"
                                 :is-active="isItemActive(item)"
-                                class="h-10 rounded-2xl px-3 transition-all font-medium data-[active=true]:bg-[#18181B] data-[active=true]:text-white dark:data-[active=true]:bg-white dark:data-[active=true]:text-neutral-900 data-[active=true]:shadow-sm hover:bg-[#EAE4DC] dark:hover:bg-neutral-800 cursor-pointer"
+                                class="h-10 cursor-pointer rounded-2xl px-3 font-medium transition-all hover:bg-[#EAE4DC] data-[active=true]:bg-[#18181B] data-[active=true]:text-white data-[active=true]:shadow-sm dark:hover:bg-neutral-800 dark:data-[active=true]:bg-white dark:data-[active=true]:text-neutral-900"
                             >
-                                <component :is="item.icon" v-if="item.icon" class="size-4 shrink-0" />
+                                <component
+                                    :is="item.icon"
+                                    v-if="item.icon"
+                                    class="size-4 shrink-0"
+                                />
                                 <span class="text-sm">{{ item.title }}</span>
-                                <ChevronRight class="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                                <ChevronRight
+                                    class="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
+                                />
                             </SidebarMenuButton>
                         </CollapsibleTrigger>
                         <CollapsibleContent>
-                            <SidebarMenuSub class="border-l-2 border-border/70 ml-4 pl-2 my-1 space-y-1">
+                            <SidebarMenuSub
+                                class="my-1 ml-4 space-y-1 border-l-2 border-border/70 pl-2"
+                            >
                                 <SidebarMenuSubItem
                                     v-for="subItem in item.children"
                                     :key="subItem.title"
                                 >
                                     <SidebarMenuSubButton
                                         as-child
-                                        :is-active="isCurrentOrParentUrl(subItem.href)"
-                                        class="h-8.5 rounded-xl px-2.5 text-xs font-medium transition-all data-[active=true]:bg-[#18181B] data-[active=true]:text-white dark:data-[active=true]:bg-white dark:data-[active=true]:text-neutral-900 data-[active=true]:shadow-sm hover:bg-[#EAE4DC] dark:hover:bg-neutral-800"
+                                        :is-active="
+                                            isCurrentOrParentUrl(subItem.href)
+                                        "
+                                        class="h-8.5 rounded-xl px-2.5 text-xs font-medium transition-all hover:bg-[#EAE4DC] data-[active=true]:bg-[#18181B] data-[active=true]:text-white data-[active=true]:shadow-sm dark:hover:bg-neutral-800 dark:data-[active=true]:bg-white dark:data-[active=true]:text-neutral-900"
                                     >
-                                        <Link :href="subItem.href" class="flex items-center gap-2">
-                                            <component :is="subItem.icon" v-if="subItem.icon" class="size-3.5" />
+                                        <Link
+                                            :href="subItem.href"
+                                            class="flex items-center gap-2"
+                                        >
+                                            <component
+                                                :is="subItem.icon"
+                                                v-if="subItem.icon"
+                                                class="size-3.5"
+                                            />
                                             <span>{{ subItem.title }}</span>
                                         </Link>
                                     </SidebarMenuSubButton>
@@ -140,10 +170,17 @@ const handleTriggerClick = (item: NavItem) => {
                         as-child
                         :is-active="isCurrentUrl(item.href)"
                         :tooltip="item.title"
-                        class="h-10 rounded-2xl px-3 transition-all font-medium data-[active=true]:bg-[#18181B] data-[active=true]:text-white dark:data-[active=true]:bg-white dark:data-[active=true]:text-neutral-900 data-[active=true]:shadow-sm hover:bg-[#EAE4DC] dark:hover:bg-neutral-800"
+                        class="h-10 rounded-2xl px-3 font-medium transition-all hover:bg-[#EAE4DC] data-[active=true]:bg-[#18181B] data-[active=true]:text-white data-[active=true]:shadow-sm dark:hover:bg-neutral-800 dark:data-[active=true]:bg-white dark:data-[active=true]:text-neutral-900"
                     >
-                        <Link :href="item.href" class="flex items-center gap-2.5">
-                            <component :is="item.icon" v-if="item.icon" class="size-4 shrink-0" />
+                        <Link
+                            :href="item.href"
+                            class="flex items-center gap-2.5"
+                        >
+                            <component
+                                :is="item.icon"
+                                v-if="item.icon"
+                                class="size-4 shrink-0"
+                            />
                             <span class="text-sm">{{ item.title }}</span>
                         </Link>
                     </SidebarMenuButton>

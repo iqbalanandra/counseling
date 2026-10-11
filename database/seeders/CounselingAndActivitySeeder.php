@@ -70,7 +70,7 @@ class CounselingAndActivitySeeder extends Seeder
                     'counseling_notes' => 'Konseli bersikap terbuka dan kooperatif. Mengidentifikasi prioritas harian dan membuat jadwal belajar terstruktur 45 menit per sesi (metode Pomodoro).',
                     'assessment_diagnosis' => 'Stres ringan adaptif karena manajemen waktu yang belum terstruktur optimal.',
                     'recommendations' => 'Menerapkan jadwal belajar harian, membatasi screen time malam hari, dan mengomunikasikan jadwal latihan dengan pelatih.',
-                    'follow_up_plan' => 'Evaluasi mingguan pada tanggal ' . now()->addDays(7)->format('d F Y'),
+                    'follow_up_plan' => 'Evaluasi mingguan pada tanggal '.now()->addDays(7)->format('d F Y'),
                     'is_confidential' => true,
                 ]
             );

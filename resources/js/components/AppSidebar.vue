@@ -70,8 +70,16 @@ const mainNavItems = computed<NavItem[]>(() => {
             href: '/counseling/requests',
             icon: ScrollText,
             children: [
-                { title: 'Permohonan', href: '/counseling/requests', icon: ClipboardList },
-                { title: 'Sesi Konseling', href: '/counseling/sessions', icon: BookOpen },
+                {
+                    title: 'Permohonan',
+                    href: '/counseling/requests',
+                    icon: ClipboardList,
+                },
+                {
+                    title: 'Sesi Konseling',
+                    href: '/counseling/sessions',
+                    icon: BookOpen,
+                },
             ],
         });
     }
@@ -104,16 +112,28 @@ const mainNavItems = computed<NavItem[]>(() => {
     const adminItems: NavItem[] = [];
 
     if (can('school.manage')) {
-        adminItems.push({ title: 'Profil Sekolah', href: '/admin/school-profile', icon: School });
+        adminItems.push({
+            title: 'Profil Sekolah',
+            href: '/admin/school-profile',
+            icon: School,
+        });
     }
     if (can('user.view')) {
         adminItems.push({ title: 'Pengguna', href: '/users', icon: Users });
     }
     if (can('role.view')) {
-        adminItems.push({ title: 'Peran & Hak Akses', href: '/roles', icon: ShieldCheck });
+        adminItems.push({
+            title: 'Peran & Hak Akses',
+            href: '/roles',
+            icon: ShieldCheck,
+        });
     }
     if (can('audit_log.view')) {
-        adminItems.push({ title: 'Audit Log', href: '/audit-logs', icon: History });
+        adminItems.push({
+            title: 'Audit Log',
+            href: '/audit-logs',
+            icon: History,
+        });
     }
 
     if (adminItems.length > 0) {
@@ -133,7 +153,9 @@ const footerNavItems = computed<NavItem[]>(() => {
     const school = (page.props as any).school || {};
     return [
         {
-            title: school.website ? (school.school_name || 'Website Sekolah') : 'Website Sekolah',
+            title: school.website
+                ? school.school_name || 'Website Sekolah'
+                : 'Website Sekolah',
             href: school.website || '#',
             icon: School,
         },

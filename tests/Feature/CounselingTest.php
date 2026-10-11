@@ -2,8 +2,8 @@
 
 use App\Models\CounselingRequest;
 use App\Models\CounselingType;
+use App\Models\Permission;
 use App\Models\Role;
-use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\User;
 
@@ -12,7 +12,7 @@ test('student can submit counseling request', function () {
     $studentRole = Role::firstOrCreate(['name' => 'Siswa'], ['display_name' => 'Siswa']);
     $user->roles()->attach($studentRole);
 
-    $perm = \App\Models\Permission::firstOrCreate(
+    $perm = Permission::firstOrCreate(
         ['name' => 'counseling.create'],
         ['display_name' => 'Ajukan Konseling', 'group' => 'counseling']
     );

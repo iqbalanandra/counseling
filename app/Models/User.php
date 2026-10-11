@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 
 /**
  * @property int $id
@@ -113,7 +112,7 @@ class User extends Authenticatable
      */
     public function getHomeroomClassIds(): array
     {
-        if (!$this->teacher) {
+        if (! $this->teacher) {
             return [];
         }
 
@@ -161,6 +160,7 @@ class User extends Authenticatable
     public function scopeRole($query, string|array $roleName)
     {
         $roles = is_array($roleName) ? $roleName : [$roleName];
+
         return $query->whereHas('roles', fn ($q) => $q->whereIn('name', $roles));
     }
 }

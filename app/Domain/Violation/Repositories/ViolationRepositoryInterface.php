@@ -3,7 +3,6 @@
 namespace App\Domain\Violation\Repositories;
 
 use App\Models\Violation;
-use App\Models\ViolationCategory;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 

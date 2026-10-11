@@ -1,15 +1,15 @@
 <?php
 
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 test('wali kelas can only view students from assigned homeroom classes', function () {
     // Roles & permissions
-    $viewPerm = \App\Models\Permission::firstOrCreate(['name' => 'student.view'], ['group' => 'student', 'display_name' => 'Lihat Siswa']);
+    $viewPerm = Permission::firstOrCreate(['name' => 'student.view'], ['group' => 'student', 'display_name' => 'Lihat Siswa']);
     $waliRole = Role::firstOrCreate(['name' => 'Wali Kelas'], ['display_name' => 'Wali Kelas']);
     $waliRole->permissions()->syncWithoutDetaching([$viewPerm->id]);
 
@@ -45,7 +45,7 @@ test('wali kelas can only view students from assigned homeroom classes', functio
 });
 
 test('wali kelas can be assigned multiple classes and access students from all of them', function () {
-    $viewPerm = \App\Models\Permission::firstOrCreate(['name' => 'student.view'], ['group' => 'student', 'display_name' => 'Lihat Siswa']);
+    $viewPerm = Permission::firstOrCreate(['name' => 'student.view'], ['group' => 'student', 'display_name' => 'Lihat Siswa']);
     $waliRole = Role::firstOrCreate(['name' => 'Wali Kelas'], ['display_name' => 'Wali Kelas']);
     $waliRole->permissions()->syncWithoutDetaching([$viewPerm->id]);
 
@@ -172,4 +172,3 @@ test('creating user with guru bk role creates teacher profile', function () {
     expect($newUser->teacher)->not->toBeNull();
     expect($newUser->teacher->position)->toBe('Guru BK');
 });
-

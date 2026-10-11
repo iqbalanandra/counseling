@@ -39,11 +39,11 @@ class RecordCounselingSessionUseCase
         ]);
 
         // Notify student about follow-up if exists
-        if (!empty($data['follow_up_plan']) && $session->student?->user_id) {
+        if (! empty($data['follow_up_plan']) && $session->student?->user_id) {
             NotificationService::send(
                 userId: $session->student->user_id,
                 title: 'Tindak Lanjut Konseling',
-                message: "Guru BK telah mencatat hasil konseling Anda dan memberikan rekomendasi tindak lanjut.",
+                message: 'Guru BK telah mencatat hasil konseling Anda dan memberikan rekomendasi tindak lanjut.',
                 type: 'counseling',
                 link: '/counseling/history'
             );

@@ -53,8 +53,12 @@ const fillCredentials = (email: string) => {
     </div>
 
     <!-- Quick Demo Accounts Helper -->
-    <div class="mb-6 rounded-2xl border border-indigo-200/70 bg-indigo-50/60 dark:border-indigo-900/40 dark:bg-indigo-950/30 p-3.5 text-xs">
-        <p class="font-semibold text-indigo-900 dark:text-indigo-200 mb-2 flex items-center gap-1.5">
+    <div
+        class="mb-6 rounded-2xl border border-indigo-200/70 bg-indigo-50/60 p-3.5 text-xs dark:border-indigo-900/40 dark:bg-indigo-950/30"
+    >
+        <p
+            class="mb-2 flex items-center gap-1.5 font-semibold text-indigo-900 dark:text-indigo-200"
+        >
             <ShieldCheck class="size-4 text-indigo-600 dark:text-indigo-400" />
             Pilih Akun Demo Cepat (1-Klik Isi):
         </p>
@@ -64,7 +68,7 @@ const fillCredentials = (email: string) => {
                 :key="role.label"
                 type="button"
                 @click="fillCredentials(role.email)"
-                class="rounded-lg border border-indigo-200 bg-white dark:bg-card dark:border-indigo-800/80 px-2.5 py-1 font-medium text-foreground hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 transition-colors shadow-2xs"
+                class="rounded-lg border border-indigo-200 bg-white px-2.5 py-1 font-medium text-foreground shadow-2xs transition-colors hover:bg-indigo-600 hover:text-white dark:border-indigo-800/80 dark:bg-card dark:hover:bg-indigo-600"
             >
                 {{ role.label }}
             </button>
@@ -119,7 +123,10 @@ const fillCredentials = (email: string) => {
             </div>
 
             <div class="flex items-center justify-between">
-                <Label for="remember" class="flex items-center space-x-2 text-xs cursor-pointer select-none">
+                <Label
+                    for="remember"
+                    class="flex cursor-pointer items-center space-x-2 text-xs select-none"
+                >
                     <Checkbox id="remember" name="remember" :tabindex="3" />
                     <span>Ingat saya</span>
                 </Label>
@@ -127,7 +134,7 @@ const fillCredentials = (email: string) => {
 
             <Button
                 type="submit"
-                class="mt-2 w-full bg-indigo-600 hover:bg-indigo-700 font-bold"
+                class="mt-2 w-full bg-indigo-600 font-bold hover:bg-indigo-700"
                 :tabindex="4"
                 :disabled="processing"
                 data-test="login-button"
@@ -137,9 +144,13 @@ const fillCredentials = (email: string) => {
             </Button>
         </div>
 
-        <div class="text-center text-xs text-muted-foreground pt-2 border-t border-border">
+        <div
+            class="border-t border-border pt-2 text-center text-xs text-muted-foreground"
+        >
             Kembali ke
-            <Link href="/" class="font-medium text-indigo-600 hover:underline">Halaman Utama</Link>
+            <Link href="/" class="font-medium text-indigo-600 hover:underline"
+                >Halaman Utama</Link
+            >
         </div>
     </Form>
 </template>

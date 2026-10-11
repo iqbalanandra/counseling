@@ -70,7 +70,6 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
-
     *,
     ::after,
     ::before,
@@ -81,13 +80,12 @@
 }
 
 @layer utilities {
-
     body,
     html {
         --font-sans:
-            'Plus Jakarta Sans', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
-            'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-            'Noto Color Emoji';
+            'Plus Jakarta Sans', 'Instrument Sans', ui-sans-serif, system-ui,
+            sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+            'Segoe UI Symbol', 'Noto Color Emoji';
     }
 }
 
@@ -177,7 +175,11 @@
 
     body {
         @apply bg-background text-foreground;
-        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        font-family:
+            'Plus Jakarta Sans',
+            system-ui,
+            -apple-system,
+            sans-serif;
     }
 }
 
@@ -189,7 +191,10 @@
     }
 
     to {
-        height: var(--reka-collapsible-content-height, var(--radix-collapsible-content-height));
+        height: var(
+            --reka-collapsible-content-height,
+            var(--radix-collapsible-content-height)
+        );
         opacity: 1;
         transform: translateY(0);
     }
@@ -197,7 +202,10 @@
 
 @keyframes collapsible-up {
     from {
-        height: var(--reka-collapsible-content-height, var(--radix-collapsible-content-height));
+        height: var(
+            --reka-collapsible-content-height,
+            var(--radix-collapsible-content-height)
+        );
         opacity: 1;
         transform: translateY(0);
     }
@@ -218,15 +226,15 @@
 }
 
 /* Date & Time inputs: ensure whole input and calendar indicator are clearly interactive */
-input[type="date"],
-input[type="datetime-local"],
-input[type="time"] {
+input[type='date'],
+input[type='datetime-local'],
+input[type='time'] {
     cursor: pointer;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator,
-input[type="datetime-local"]::-webkit-calendar-picker-indicator,
-input[type="time"]::-webkit-calendar-picker-indicator {
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='datetime-local']::-webkit-calendar-picker-indicator,
+input[type='time']::-webkit-calendar-picker-indicator {
     cursor: pointer;
 }
 

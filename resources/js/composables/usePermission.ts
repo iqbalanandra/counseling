@@ -42,7 +42,9 @@ export function usePermission() {
 
     const isSuperAdmin = computed(() => {
         if (!user.value) return false;
-        return user.value.is_system_user || user.value.roles.includes('Superadmin');
+        return (
+            user.value.is_system_user || user.value.roles.includes('Superadmin')
+        );
     });
 
     const can = (permission: string): boolean => {

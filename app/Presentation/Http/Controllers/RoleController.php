@@ -2,11 +2,11 @@
 
 namespace App\Presentation\Http\Controllers;
 
+use App\Application\DTOs\RoleDTO;
 use App\Application\UseCases\Role\CreateRoleUseCase;
 use App\Application\UseCases\Role\DeleteRoleUseCase;
 use App\Application\UseCases\Role\GetRolesUseCase;
 use App\Application\UseCases\Role\UpdateRoleUseCase;
-use App\Application\DTOs\RoleDTO;
 use App\Domain\Permission\Repositories\PermissionRepositoryInterface;
 use App\Domain\Role\Repositories\RoleRepositoryInterface;
 use App\Models\Role;

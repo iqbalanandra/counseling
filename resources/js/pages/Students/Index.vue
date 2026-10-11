@@ -1,7 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
-import { GraduationCap, Plus, Search, Trash2, Edit3, Eye, AlertTriangle, Star } from '@lucide/vue';
+import {
+    GraduationCap,
+    Plus,
+    Search,
+    Trash2,
+    Edit3,
+    Eye,
+    AlertTriangle,
+    Star,
+} from '@lucide/vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import AppModal from '@/components/AppModal.vue';
 import { usePermission } from '@/composables/usePermission';
@@ -50,7 +59,7 @@ const handleFilter = () => {
             search: searchInput.value || undefined,
             class_id: selectedClass.value || undefined,
         },
-        { preserveState: true, replace: true }
+        { preserveState: true, replace: true },
     );
 };
 
@@ -93,22 +102,29 @@ const confirmDelete = (student: StudentItem) => {
 
         <div class="flex flex-col gap-6 p-6">
             <!-- Header -->
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div
+                class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+            >
                 <div>
-                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground flex items-center gap-2.5">
-                        <div class="size-10 rounded-2xl bg-[#EAE6FE] text-purple-700 flex items-center justify-center">
+                    <h1
+                        class="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl"
+                    >
+                        <div
+                            class="flex size-10 items-center justify-center rounded-2xl bg-[#EAE6FE] text-purple-700"
+                        >
                             <GraduationCap class="size-6" />
                         </div>
                         Data Siswa
                     </h1>
-                    <p class="text-sm text-muted-foreground mt-1">
-                        Daftar induk siswa, monitoring pelanggaran, prestasi, dan perwalian kelas.
+                    <p class="mt-1 text-sm text-muted-foreground">
+                        Daftar induk siswa, monitoring pelanggaran, prestasi,
+                        dan perwalian kelas.
                     </p>
                 </div>
                 <button
                     v-if="can('student.create')"
                     @click="showCreateModal = true"
-                    class="inline-flex items-center gap-2 rounded-full bg-[#18181B] px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-neutral-800 transition-all cursor-pointer dark:bg-white dark:text-neutral-900"
+                    class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#18181B] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-neutral-800 dark:bg-white dark:text-neutral-900"
                 >
                     <Plus class="size-4" />
                     Tambah Siswa
@@ -116,22 +132,26 @@ const confirmDelete = (student: StudentItem) => {
             </div>
 
             <!-- Filters Bar -->
-            <div class="flex flex-col sm:flex-row gap-3 rounded-3xl border border-border/80 bg-white dark:bg-card p-4 shadow-xs">
+            <div
+                class="flex flex-col gap-3 rounded-3xl border border-border/80 bg-white p-4 shadow-xs sm:flex-row dark:bg-card"
+            >
                 <div class="relative flex-1">
-                    <Search class="absolute left-3.5 top-3 size-4 text-muted-foreground" />
+                    <Search
+                        class="absolute top-3 left-3.5 size-4 text-muted-foreground"
+                    />
                     <input
                         v-model="searchInput"
                         @keyup.enter="handleFilter"
                         type="text"
                         placeholder="Cari nama atau NIS/NISN siswa..."
-                        class="w-full rounded-2xl border border-border bg-background pl-10 pr-4 py-2.5 text-sm text-foreground focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 transition-all"
+                        class="w-full rounded-2xl border border-border bg-background py-2.5 pr-4 pl-10 text-sm text-foreground transition-all focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 focus:outline-none"
                     />
                 </div>
                 <div class="w-full sm:w-56">
                     <select
                         v-model="selectedClass"
                         @change="handleFilter"
-                        class="w-full rounded-2xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 transition-all cursor-pointer"
+                        class="w-full cursor-pointer rounded-2xl border border-border bg-background px-4 py-2.5 text-sm text-foreground transition-all focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 focus:outline-none"
                     >
                         <option value="">Semua Kelas</option>
                         <option v-for="c in classes" :key="c.id" :value="c.id">
@@ -141,79 +161,164 @@ const confirmDelete = (student: StudentItem) => {
                 </div>
                 <button
                     @click="handleFilter"
-                    class="rounded-full border border-border bg-neutral-100/80 dark:bg-neutral-800 px-5 py-2.5 text-sm font-bold text-foreground hover:bg-[#EAE4DC] dark:hover:bg-neutral-700 transition-colors cursor-pointer"
+                    class="cursor-pointer rounded-full border border-border bg-neutral-100/80 px-5 py-2.5 text-sm font-bold text-foreground transition-colors hover:bg-[#EAE4DC] dark:bg-neutral-800 dark:hover:bg-neutral-700"
                 >
                     Terapkan
                 </button>
             </div>
 
             <!-- Students Table -->
-            <div class="rounded-3xl border border-border/80 bg-white dark:bg-card shadow-xs overflow-hidden">
+            <div
+                class="overflow-hidden rounded-3xl border border-border/80 bg-white shadow-xs dark:bg-card"
+            >
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-[#F5EFE6]/70 dark:bg-neutral-900/80 border-b border-border/60">
+                        <thead
+                            class="border-b border-border/60 bg-[#F5EFE6]/70 dark:bg-neutral-900/80"
+                        >
                             <tr>
-                                <th class="px-5 py-4 font-bold text-muted-foreground text-xs uppercase tracking-wider">Siswa</th>
-                                <th class="px-5 py-4 font-bold text-muted-foreground text-xs uppercase tracking-wider">Kelas</th>
-                                <th class="px-5 py-4 font-bold text-muted-foreground text-xs uppercase tracking-wider text-center">Poin Pelanggaran</th>
-                                <th class="px-5 py-4 font-bold text-muted-foreground text-xs uppercase tracking-wider text-center">Poin Prestasi</th>
-                                <th class="px-5 py-4 font-bold text-muted-foreground text-xs uppercase tracking-wider">Status</th>
-                                <th class="px-5 py-4 font-bold text-muted-foreground text-xs uppercase tracking-wider text-right">Aksi</th>
+                                <th
+                                    class="px-5 py-4 text-xs font-bold tracking-wider text-muted-foreground uppercase"
+                                >
+                                    Siswa
+                                </th>
+                                <th
+                                    class="px-5 py-4 text-xs font-bold tracking-wider text-muted-foreground uppercase"
+                                >
+                                    Kelas
+                                </th>
+                                <th
+                                    class="px-5 py-4 text-center text-xs font-bold tracking-wider text-muted-foreground uppercase"
+                                >
+                                    Poin Pelanggaran
+                                </th>
+                                <th
+                                    class="px-5 py-4 text-center text-xs font-bold tracking-wider text-muted-foreground uppercase"
+                                >
+                                    Poin Prestasi
+                                </th>
+                                <th
+                                    class="px-5 py-4 text-xs font-bold tracking-wider text-muted-foreground uppercase"
+                                >
+                                    Status
+                                </th>
+                                <th
+                                    class="px-5 py-4 text-right text-xs font-bold tracking-wider text-muted-foreground uppercase"
+                                >
+                                    Aksi
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-border">
-                            <tr v-for="student in students.data" :key="student.id" class="hover:bg-muted/30 transition-colors">
+                            <tr
+                                v-for="student in students.data"
+                                :key="student.id"
+                                class="transition-colors hover:bg-muted/30"
+                            >
                                 <td class="px-5 py-4">
                                     <div class="flex items-center gap-3">
-                                        <div class="size-10 rounded-full bg-blue-100 dark:bg-blue-950 flex items-center justify-center font-bold text-blue-700 dark:text-blue-300">
-                                            {{ student.name.charAt(0).toUpperCase() }}
+                                        <div
+                                            class="flex size-10 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                                        >
+                                            {{
+                                                student.name
+                                                    .charAt(0)
+                                                    .toUpperCase()
+                                            }}
                                         </div>
                                         <div>
-                                            <Link :href="`/students/${student.id}`" class="font-semibold text-foreground hover:text-indigo-600 transition-colors">
+                                            <Link
+                                                :href="`/students/${student.id}`"
+                                                class="font-semibold text-foreground transition-colors hover:text-indigo-600"
+                                            >
                                                 {{ student.name }}
                                             </Link>
-                                            <p class="text-xs text-muted-foreground">
-                                                NIS: {{ student.nis }} · {{ student.gender === 'L' ? 'Laki-laki' : 'Perempuan' }}
+                                            <p
+                                                class="text-xs text-muted-foreground"
+                                            >
+                                                NIS: {{ student.nis }} ·
+                                                {{
+                                                    student.gender === 'L'
+                                                        ? 'Laki-laki'
+                                                        : 'Perempuan'
+                                                }}
                                             </p>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-5 py-4">
-                                    <span class="inline-flex rounded-lg bg-muted px-2.5 py-1 text-xs font-semibold text-foreground">
-                                        {{ student.class_name || 'Belum Ada Kelas' }}
+                                    <span
+                                        class="inline-flex rounded-lg bg-muted px-2.5 py-1 text-xs font-semibold text-foreground"
+                                    >
+                                        {{
+                                            student.class_name ||
+                                            'Belum Ada Kelas'
+                                        }}
                                     </span>
                                 </td>
                                 <td class="px-5 py-4 text-center">
                                     <span
-                                        class="inline-flex items-center gap-1 font-semibold text-xs"
-                                        :class="student.total_violation_points > 0 ? 'text-red-600 dark:text-red-400' : 'text-muted-foreground'"
+                                        class="inline-flex items-center gap-1 text-xs font-semibold"
+                                        :class="
+                                            student.total_violation_points > 0
+                                                ? 'text-red-600 dark:text-red-400'
+                                                : 'text-muted-foreground'
+                                        "
                                     >
-                                        <AlertTriangle v-if="student.total_violation_points > 0" class="size-3.5" />
+                                        <AlertTriangle
+                                            v-if="
+                                                student.total_violation_points >
+                                                0
+                                            "
+                                            class="size-3.5"
+                                        />
                                         {{ student.total_violation_points }}
                                     </span>
                                 </td>
                                 <td class="px-5 py-4 text-center">
                                     <span
-                                        class="inline-flex items-center gap-1 font-semibold text-xs"
-                                        :class="student.total_achievement_points > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-muted-foreground'"
+                                        class="inline-flex items-center gap-1 text-xs font-semibold"
+                                        :class="
+                                            student.total_achievement_points > 0
+                                                ? 'text-amber-600 dark:text-amber-400'
+                                                : 'text-muted-foreground'
+                                        "
                                     >
-                                        <Star v-if="student.total_achievement_points > 0" class="size-3.5 fill-amber-500 text-amber-500" />
+                                        <Star
+                                            v-if="
+                                                student.total_achievement_points >
+                                                0
+                                            "
+                                            class="size-3.5 fill-amber-500 text-amber-500"
+                                        />
                                         {{ student.total_achievement_points }}
                                     </span>
                                 </td>
                                 <td class="px-5 py-4">
                                     <span
                                         class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold"
-                                        :class="student.status === 'active' ? 'bg-green-100 text-green-800 dark:bg-green-950/60 dark:text-green-300' : 'bg-gray-100 text-gray-800 dark:bg-gray-950 dark:text-gray-300'"
+                                        :class="
+                                            student.status === 'active'
+                                                ? 'bg-green-100 text-green-800 dark:bg-green-950/60 dark:text-green-300'
+                                                : 'bg-gray-100 text-gray-800 dark:bg-gray-950 dark:text-gray-300'
+                                        "
                                     >
-                                        {{ student.status === 'active' ? 'Aktif' : student.status === 'graduated' ? 'Lulus' : 'Pindah' }}
+                                        {{
+                                            student.status === 'active'
+                                                ? 'Aktif'
+                                                : student.status === 'graduated'
+                                                  ? 'Lulus'
+                                                  : 'Pindah'
+                                        }}
                                     </span>
                                 </td>
                                 <td class="px-5 py-4 text-right">
-                                    <div class="flex items-center justify-end gap-2">
+                                    <div
+                                        class="flex items-center justify-end gap-2"
+                                    >
                                         <Link
                                             :href="`/students/${student.id}`"
-                                            class="rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                                            class="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                                             title="Profil Siswa"
                                         >
                                             <Eye class="size-4" />
@@ -221,7 +326,7 @@ const confirmDelete = (student: StudentItem) => {
                                         <button
                                             v-if="can('student.delete')"
                                             @click="confirmDelete(student)"
-                                            class="rounded-lg p-1.5 text-muted-foreground hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50 dark:hover:text-red-400 transition-colors"
+                                            class="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50 dark:hover:text-red-400"
                                             title="Hapus Data Siswa"
                                         >
                                             <Trash2 class="size-4" />
@@ -231,7 +336,10 @@ const confirmDelete = (student: StudentItem) => {
                             </tr>
 
                             <tr v-if="students.data.length === 0">
-                                <td colspan="6" class="py-12 text-center text-muted-foreground text-sm">
+                                <td
+                                    colspan="6"
+                                    class="py-12 text-center text-sm text-muted-foreground"
+                                >
                                     Tidak ada data siswa yang sesuai.
                                 </td>
                             </tr>
@@ -240,8 +348,14 @@ const confirmDelete = (student: StudentItem) => {
                 </div>
 
                 <!-- Pagination -->
-                <div v-if="students.total > 15" class="flex items-center justify-between border-t border-border px-5 py-3 text-xs text-muted-foreground">
-                    <span>Menampilkan {{ students.data.length }} dari total {{ students.total }} siswa</span>
+                <div
+                    v-if="students.total > 15"
+                    class="flex items-center justify-between border-t border-border px-5 py-3 text-xs text-muted-foreground"
+                >
+                    <span
+                        >Menampilkan {{ students.data.length }} dari total
+                        {{ students.total }} siswa</span
+                    >
                     <div class="flex gap-1">
                         <Link
                             v-for="(link, i) in students.links"
@@ -249,8 +363,10 @@ const confirmDelete = (student: StudentItem) => {
                             :href="link.url || '#'"
                             :class="[
                                 'rounded-lg px-2.5 py-1 transition-colors',
-                                link.active ? 'bg-indigo-600 text-white font-bold' : 'hover:bg-muted text-foreground',
-                                !link.url && 'opacity-50 pointer-events-none'
+                                link.active
+                                    ? 'bg-indigo-600 font-bold text-white'
+                                    : 'text-foreground hover:bg-muted',
+                                !link.url && 'pointer-events-none opacity-50',
                             ]"
                             v-html="link.label"
                         />
@@ -269,125 +385,169 @@ const confirmDelete = (student: StudentItem) => {
                 <form @submit.prevent="submitCreate" class="space-y-4">
                     <div class="grid gap-3 sm:grid-cols-2">
                         <div>
-                            <label class="block text-xs font-semibold text-foreground mb-1.5">
+                            <label
+                                class="mb-1.5 block text-xs font-semibold text-foreground"
+                            >
                                 NIS <span class="text-rose-500">*</span>
                             </label>
                             <input
                                 v-model="createForm.nis"
                                 type="text"
                                 required
-                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                             />
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-foreground mb-1.5">NISN</label>
+                            <label
+                                class="mb-1.5 block text-xs font-semibold text-foreground"
+                                >NISN</label
+                            >
                             <input
                                 v-model="createForm.nisn"
                                 type="text"
-                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-foreground mb-1.5">
+                        <label
+                            class="mb-1.5 block text-xs font-semibold text-foreground"
+                        >
                             Nama Lengkap <span class="text-rose-500">*</span>
                         </label>
                         <input
                             v-model="createForm.name"
                             type="text"
                             required
-                            class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                            class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                         />
                     </div>
 
                     <div class="grid gap-3 sm:grid-cols-2">
                         <div>
-                            <label class="block text-xs font-semibold text-foreground mb-1.5">
-                                Jenis Kelamin <span class="text-rose-500">*</span>
+                            <label
+                                class="mb-1.5 block text-xs font-semibold text-foreground"
+                            >
+                                Jenis Kelamin
+                                <span class="text-rose-500">*</span>
                             </label>
                             <select
                                 v-model="createForm.gender"
-                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                             >
                                 <option value="L">Laki-laki</option>
                                 <option value="P">Perempuan</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-foreground mb-1.5">Kelas</label>
+                            <label
+                                class="mb-1.5 block text-xs font-semibold text-foreground"
+                                >Kelas</label
+                            >
                             <select
                                 v-model="createForm.class_id"
-                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                             >
                                 <option value="">Pilih Kelas...</option>
-                                <option v-for="c in classes" :key="c.id" :value="c.id">{{ c.name }}</option>
+                                <option
+                                    v-for="c in classes"
+                                    :key="c.id"
+                                    :value="c.id"
+                                >
+                                    {{ c.name }}
+                                </option>
                             </select>
                         </div>
                     </div>
 
                     <div class="grid gap-3 sm:grid-cols-2">
                         <div>
-                            <label class="block text-xs font-semibold text-foreground mb-1.5">Tempat Lahir</label>
+                            <label
+                                class="mb-1.5 block text-xs font-semibold text-foreground"
+                                >Tempat Lahir</label
+                            >
                             <input
                                 v-model="createForm.birth_place"
                                 type="text"
-                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                             />
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-foreground mb-1.5">Tanggal Lahir</label>
+                            <label
+                                class="mb-1.5 block text-xs font-semibold text-foreground"
+                                >Tanggal Lahir</label
+                            >
                             <input
                                 v-model="createForm.birth_date"
                                 type="date"
-                                @click="($event.target as HTMLInputElement).showPicker?.()"
-                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 cursor-pointer"
+                                @click="
+                                    (
+                                        $event.target as HTMLInputElement
+                                    ).showPicker?.()
+                                "
+                                class="w-full cursor-pointer rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                             />
                         </div>
                     </div>
 
                     <div class="grid gap-3 sm:grid-cols-2">
                         <div>
-                            <label class="block text-xs font-semibold text-foreground mb-1.5">Nama Orang Tua / Wali</label>
+                            <label
+                                class="mb-1.5 block text-xs font-semibold text-foreground"
+                                >Nama Orang Tua / Wali</label
+                            >
                             <input
                                 v-model="createForm.parent_name"
                                 type="text"
-                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                             />
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-foreground mb-1.5">No. Kontak Orang Tua</label>
+                            <label
+                                class="mb-1.5 block text-xs font-semibold text-foreground"
+                                >No. Kontak Orang Tua</label
+                            >
                             <input
                                 v-model="createForm.parent_phone"
                                 type="text"
-                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                                class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-foreground mb-1.5">Alamat Tinggal</label>
+                        <label
+                            class="mb-1.5 block text-xs font-semibold text-foreground"
+                            >Alamat Tinggal</label
+                        >
                         <textarea
                             v-model="createForm.address"
                             rows="2"
-                            class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                            class="w-full rounded-2xl border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                         ></textarea>
                     </div>
 
-                    <div class="flex items-center justify-end gap-3 pt-4 border-t border-border/80">
+                    <div
+                        class="flex items-center justify-end gap-3 border-t border-border/80 pt-4"
+                    >
                         <button
                             type="button"
                             @click="showCreateModal = false"
-                            class="rounded-xl border border-border px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted transition-colors cursor-pointer"
+                            class="cursor-pointer rounded-xl border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
                         >
                             Batal
                         </button>
                         <button
                             type="submit"
                             :disabled="createForm.processing"
-                            class="rounded-xl bg-indigo-600 px-5 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50 transition-colors cursor-pointer shadow-xs"
+                            class="cursor-pointer rounded-xl bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-xs transition-colors hover:bg-indigo-700 disabled:opacity-50"
                         >
-                            {{ createForm.processing ? 'Menyimpan...' : 'Simpan Siswa' }}
+                            {{
+                                createForm.processing
+                                    ? 'Menyimpan...'
+                                    : 'Simpan Siswa'
+                            }}
                         </button>
                     </div>
                 </form>

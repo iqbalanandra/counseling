@@ -25,7 +25,7 @@ class UpdateUserUseCase
             'status' => $data['status'] ?? 'active',
         ];
 
-        if (!empty($data['password'])) {
+        if (! empty($data['password'])) {
             $updateData['password'] = Hash::make($data['password']);
         }
 

@@ -42,6 +42,7 @@ class ViolationRepository implements ViolationRepositoryInterface
         $violation = Violation::create($data);
         // Increment student violation points
         $violation->student->increment('total_violation_points', $violation->points);
+
         return $violation;
     }
 
@@ -53,6 +54,7 @@ class ViolationRepository implements ViolationRepositoryInterface
             $diff = $data['points'] - $oldPoints;
             $violation->student->increment('total_violation_points', $diff);
         }
+
         return $updated;
     }
 
@@ -64,6 +66,7 @@ class ViolationRepository implements ViolationRepositoryInterface
         if ($deleted) {
             $student->decrement('total_violation_points', $points);
         }
+
         return $deleted;
     }
 

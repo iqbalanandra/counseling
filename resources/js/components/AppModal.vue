@@ -15,7 +15,7 @@ const props = withDefaults(
         maxWidth: 'lg',
         closeOnOverlay: true,
         closeOnEsc: true,
-    }
+    },
 );
 
 const emit = defineEmits<{
@@ -65,7 +65,7 @@ watch(
                 document.body.style.overflow = '';
             }
         }
-    }
+    },
 );
 
 onMounted(() => {
@@ -92,7 +92,7 @@ onUnmounted(() => {
         >
             <div
                 v-if="show"
-                class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto"
+                class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm"
                 @click="handleBackdropClick"
             >
                 <Transition
@@ -106,8 +106,8 @@ onUnmounted(() => {
                     <div
                         v-if="show"
                         :class="[
-                            'relative w-full rounded-3xl border border-border/80 bg-white dark:bg-card p-6 sm:p-7 shadow-2xl max-h-[90vh] overflow-y-auto my-auto',
-                            maxWidthClass
+                            'relative my-auto max-h-[90vh] w-full overflow-y-auto rounded-3xl border border-border/80 bg-white p-6 shadow-2xl sm:p-7 dark:bg-card',
+                            maxWidthClass,
                         ]"
                         @click.stop
                     >
@@ -115,7 +115,7 @@ onUnmounted(() => {
                         <button
                             type="button"
                             @click="emit('close')"
-                            class="absolute top-5 right-5 rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
+                            class="absolute top-5 right-5 cursor-pointer rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                             aria-label="Tutup"
                             title="Tutup (Esc)"
                         >
@@ -125,8 +125,17 @@ onUnmounted(() => {
                         <!-- Header slot or title/description -->
                         <div v-if="title || $slots.header" class="mb-5 pr-8">
                             <slot name="header">
-                                <h2 class="text-xl font-extrabold text-foreground tracking-tight">{{ title }}</h2>
-                                <p v-if="description" class="text-sm text-muted-foreground mt-1">{{ description }}</p>
+                                <h2
+                                    class="text-xl font-extrabold tracking-tight text-foreground"
+                                >
+                                    {{ title }}
+                                </h2>
+                                <p
+                                    v-if="description"
+                                    class="mt-1 text-sm text-muted-foreground"
+                                >
+                                    {{ description }}
+                                </p>
                             </slot>
                         </div>
 

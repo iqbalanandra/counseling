@@ -7,8 +7,10 @@ use App\Application\UseCases\Counseling\RecordCounselingSessionUseCase;
 use App\Application\UseCases\Counseling\SubmitCounselingRequestUseCase;
 use App\Domain\Counseling\Repositories\CounselingRepositoryInterface;
 use App\Domain\Student\Repositories\StudentRepositoryInterface;
+use App\Infrastructure\Services\NotificationService;
 use App\Models\CounselingRequest;
 use App\Models\CounselingSession;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +40,7 @@ class CounselingController extends Controller
         }
 
         // Students can only see their own requests
-        if ($user->hasRole('Siswa') && !$user->isSuperAdmin()) {
+        if ($user->hasRole('Siswa') && ! $user->isSuperAdmin()) {
             $student = $this->studentRepository->findByUserId($user->id);
             $studentId = $student?->id;
         }
@@ -78,7 +80,7 @@ class CounselingController extends Controller
         $user = Auth::user();
         if ($user->isWaliKelasOnly()) {
             $allowedClassIds = $user->getHomeroomClassIds();
-            if (!in_array($counselingRequest->student?->class_id, $allowedClassIds)) {
+            if (! in_array($counselingRequest->student?->class_id, $allowedClassIds)) {
                 abort(403, 'Anda tidak memiliki akses ke permohonan konseling siswa di luar kelas perwalian Anda.');
             }
         }
@@ -106,7 +108,7 @@ class CounselingController extends Controller
             $data['complaint_summary'] = $counselingRequest->complaint_summary;
         }
 
-        $counselors = \App\Models\User::whereHas('roles', fn ($q) => $q->whereIn('name', ['Guru BK', 'Superadmin']))
+        $counselors = User::whereHas('roles', fn ($q) => $q->whereIn('name', ['Guru BK', 'Superadmin']))
             ->where('status', 'active')
             ->get()
             ->map(fn ($u) => [
@@ -140,7 +142,7 @@ class CounselingController extends Controller
         $user = Auth::user();
         $student = $this->studentRepository->findByUserId($user->id);
 
-        if (!$student) {
+        if (! $student) {
             return back()->with('error', 'Profil siswa Anda tidak ditemukan. Hubungi administrator.');
         }
 
@@ -161,8 +163,8 @@ class CounselingController extends Controller
         ]);
 
         $counselor = Auth::user();
-        if (!empty($validated['counselor_id'])) {
-            $assigned = \App\Models\User::find($validated['counselor_id']);
+        if (! empty($validated['counselor_id'])) {
+            $assigned = User::find($validated['counselor_id']);
             if ($assigned) {
                 $counselor = $assigned;
             }
@@ -189,7 +191,7 @@ class CounselingController extends Controller
 
         // Notify student
         if ($counselingRequest->student?->user_id) {
-            \App\Infrastructure\Services\NotificationService::send(
+            NotificationService::send(
                 userId: $counselingRequest->student->user_id,
                 title: 'Jadwal Konseling Diubah',
                 message: "Jadwal konseling Anda telah diubah ke {$validated['scheduled_datetime']}. Alasan: {$validated['rescheduled_reason']}",
@@ -214,12 +216,12 @@ class CounselingController extends Controller
             $allowedClassIds = $user->getHomeroomClassIds();
         }
 
-        if ($user->hasRole('Siswa') && !$user->isSuperAdmin()) {
+        if ($user->hasRole('Siswa') && ! $user->isSuperAdmin()) {
             $student = $this->studentRepository->findByUserId($user->id);
             $studentId = $student?->id;
         }
 
-        if ($user->hasRole('Guru BK') && !$user->isSuperAdmin()) {
+        if ($user->hasRole('Guru BK') && ! $user->isSuperAdmin()) {
             $counselorId = $user->id;
         }
 

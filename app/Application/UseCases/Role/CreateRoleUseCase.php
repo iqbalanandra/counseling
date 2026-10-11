@@ -22,7 +22,7 @@ class CreateRoleUseCase
             'is_protected' => false,
         ]);
 
-        if (!empty($dto->permissionIds)) {
+        if (! empty($dto->permissionIds)) {
             $this->roleRepository->syncPermissions($role, $dto->permissionIds);
         }
 

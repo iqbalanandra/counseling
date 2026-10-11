@@ -2,14 +2,10 @@
 
 namespace App\Presentation\Http\Controllers;
 
-use App\Domain\Achievement\Repositories\AchievementRepositoryInterface;
-use App\Domain\Counseling\Repositories\CounselingRepositoryInterface;
 use App\Domain\SchoolClass\Repositories\SchoolClassRepositoryInterface;
 use App\Domain\Student\Repositories\StudentRepositoryInterface;
-use App\Domain\Violation\Repositories\ViolationRepositoryInterface;
 use App\Infrastructure\Services\AuditLogService;
 use App\Models\Achievement;
-use App\Models\CounselingRequest;
 use App\Models\CounselingSession;
 use App\Models\Student;
 use App\Models\Violation;
@@ -153,7 +149,7 @@ class ReportController extends Controller
             'rows' => $rows,
         ]);
 
-        $fileName = str_replace(' ', '_', strtolower($title)) . '_' . date('Ymd_His') . '.pdf';
+        $fileName = str_replace(' ', '_', strtolower($title)).'_'.date('Ymd_His').'.pdf';
 
         return $pdf->download($fileName);
     }

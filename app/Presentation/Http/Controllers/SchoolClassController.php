@@ -83,7 +83,7 @@ class SchoolClassController extends Controller
         ]);
 
         $teacherIds = $validated['teacher_ids'] ?? [];
-        $primaryTeacherId = !empty($teacherIds) ? $teacherIds[0] : null;
+        $primaryTeacherId = ! empty($teacherIds) ? $teacherIds[0] : null;
 
         $schoolClass = $this->classRepository->create([
             'name' => $validated['name'],
@@ -92,7 +92,7 @@ class SchoolClassController extends Controller
             'homeroom_teacher_id' => $primaryTeacherId,
         ]);
 
-        if (!empty($teacherIds)) {
+        if (! empty($teacherIds)) {
             $schoolClass->homeroomTeachers()->sync($teacherIds);
         }
 
@@ -112,7 +112,7 @@ class SchoolClassController extends Controller
         ]);
 
         $teacherIds = $validated['teacher_ids'] ?? [];
-        $primaryTeacherId = !empty($teacherIds) ? $teacherIds[0] : null;
+        $primaryTeacherId = ! empty($teacherIds) ? $teacherIds[0] : null;
 
         $this->classRepository->update($class, [
             'name' => $validated['name'],

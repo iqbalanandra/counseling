@@ -32,7 +32,7 @@ watch(
             toast.info(flash.message);
         }
     },
-    { deep: true, immediate: true }
+    { deep: true, immediate: true },
 );
 </script>
 
@@ -46,4 +46,3 @@ watch(
         <Toaster richColors position="top-right" />
     </AppShell>
 </template>
-

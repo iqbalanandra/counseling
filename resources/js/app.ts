@@ -47,7 +47,11 @@ if (typeof window !== 'undefined') {
         const target = e.target as HTMLElement | null;
         if (target && target.tagName === 'INPUT') {
             const input = target as HTMLInputElement;
-            if (['date', 'datetime-local', 'time', 'month', 'week'].includes(input.type)) {
+            if (
+                ['date', 'datetime-local', 'time', 'month', 'week'].includes(
+                    input.type,
+                )
+            ) {
                 try {
                     input.showPicker?.();
                 } catch {

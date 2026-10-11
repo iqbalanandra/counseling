@@ -4,7 +4,6 @@ namespace App\Presentation\Http\Controllers;
 
 use App\Models\AppNotification;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller

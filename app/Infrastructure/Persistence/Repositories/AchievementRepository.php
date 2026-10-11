@@ -43,6 +43,7 @@ class AchievementRepository implements AchievementRepositoryInterface
         if ($achievement->verification_status === 'verified') {
             $achievement->student->increment('total_achievement_points', $achievement->points);
         }
+
         return $achievement;
     }
 

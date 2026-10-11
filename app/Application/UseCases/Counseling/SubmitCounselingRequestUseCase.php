@@ -7,7 +7,6 @@ use App\Infrastructure\Services\AuditLogService;
 use App\Infrastructure\Services\NotificationService;
 use App\Models\CounselingRequest;
 use App\Models\Student;
-use App\Models\User;
 
 class SubmitCounselingRequestUseCase
 {

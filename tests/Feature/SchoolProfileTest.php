@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\AuditLog;
 use App\Models\SchoolSetting;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;

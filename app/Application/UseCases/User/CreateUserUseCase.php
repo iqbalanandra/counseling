@@ -25,7 +25,7 @@ class CreateUserUseCase
             'email_verified_at' => now(),
         ]);
 
-        if (!empty($data['role_ids'])) {
+        if (! empty($data['role_ids'])) {
             $this->userRepository->syncRoles($user, $data['role_ids']);
         }
 

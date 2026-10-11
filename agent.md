@@ -8,21 +8,21 @@ The system is intended to digitize and integrate BK service management, student 
 
 The system must be designed with a strong focus on:
 
-* Security and confidentiality of counseling data
-* Flexible and fully dynamic RBAC
-* Clean and maintainable architecture
-* Responsive web interface
-* Separation of business logic from framework-specific implementation
-* Scalable database design
-* Clear authorization boundaries between school roles
+- Security and confidentiality of counseling data
+- Flexible and fully dynamic RBAC
+- Clean and maintainable architecture
+- Responsive web interface
+- Separation of business logic from framework-specific implementation
+- Scalable database design
+- Clear authorization boundaries between school roles
 
 The system should support the following initial roles:
 
-* Superadmin
-* Kepala Sekolah
-* Guru BK
-* Wali Kelas
-* Siswa
+- Superadmin
+- Kepala Sekolah
+- Guru BK
+- Wali Kelas
+- Siswa
 
 However, **DO NOT hardcode these roles into the authorization system**.
 
@@ -36,32 +36,32 @@ Use the following stack:
 
 ### Backend
 
-* Laravel
-* PHP
-* MySQL
-* Laravel Eloquent where appropriate
+- Laravel
+- PHP
+- MySQL
+- Laravel Eloquent where appropriate
 
 ### Frontend
 
-* Vue.js
-* Inertia.js
-* Tailwind CSS
+- Vue.js
+- Inertia.js
+- Tailwind CSS
 
 ### Architecture
 
-* Clean Architecture
-* Domain-driven separation
-* Service/Use Case based business logic
-* Repository abstraction
-* Dependency inversion
+- Clean Architecture
+- Domain-driven separation
+- Service/Use Case based business logic
+- Repository abstraction
+- Dependency inversion
 
 ### Development Environment
 
 The application must be compatible with:
 
-* Laravel Herd / Laragon
-* MySQL
-* Node.js + npm
+- Laravel Herd / Laragon
+- MySQL
+- Node.js + npm
 
 Do not introduce unnecessary frameworks or libraries unless they solve a clearly defined requirement.
 
@@ -147,10 +147,11 @@ resources/js/
 1. Controllers must remain thin.
 2. Controllers should only:
 
-   * Receive requests
-   * Validate/transform input
-   * Call application use cases
-   * Return Inertia responses
+    - Receive requests
+    - Validate/transform input
+    - Call application use cases
+    - Return Inertia responses
+
 3. Business rules must live inside Application/Domain layers.
 4. Eloquent Models must not contain complex business logic.
 5. Repositories must abstract persistence where appropriate.
@@ -160,11 +161,11 @@ resources/js/
 9. Use DTOs for transferring structured data between layers where beneficial.
 10. Every major module should have clearly separated:
 
-* Domain entity/value concepts
-* Use cases
-* Repository interfaces
-* Infrastructure implementation
-* Presentation layer
+- Domain entity/value concepts
+- Use cases
+- Repository interfaces
+- Infrastructure implementation
+- Presentation layer
 
 The architecture should remain understandable to another developer who joins the project later.
 
@@ -307,15 +308,15 @@ Superadmin must be able to:
 
 ### Role Management
 
-* View roles
-* Create role
-* Rename role
-* Edit role description
-* Assign permissions
-* Remove permissions
-* Delete role
-* Duplicate/clone role
-* Assign users to roles
+- View roles
+- Create role
+- Rename role
+- Edit role description
+- Assign permissions
+- Remove permissions
+- Delete role
+- Duplicate/clone role
+- Assign users to roles
 
 Example UI:
 
@@ -334,10 +335,10 @@ Role Management
 
 Superadmin can:
 
-* View all permissions
-* Create permissions if required
-* Group permissions by module
-* Enable/disable permissions for roles
+- View all permissions
+- Create permissions if required
+- Group permissions by module
+- Enable/disable permissions for roles
 
 Permission matrix:
 
@@ -399,9 +400,7 @@ The UI should dynamically hide/disable features the user does not have permissio
 For example:
 
 ```vue
-<Button
-    v-if="can('counseling.approve')"
->
+<Button v-if="can('counseling.approve')">
     Approve
 </Button>
 ```
@@ -420,12 +419,12 @@ The Superadmin role must have special protection.
 
 Rules:
 
-* Superadmin can manage all roles and permissions.
-* Superadmin cannot accidentally remove their own final Superadmin access.
-* Prevent deletion of the last Superadmin.
-* Prevent removing critical permissions from the only Superadmin.
-* Log sensitive RBAC changes.
-* Role/permission changes should be auditable.
+- Superadmin can manage all roles and permissions.
+- Superadmin cannot accidentally remove their own final Superadmin access.
+- Prevent deletion of the last Superadmin.
+- Prevent removing critical permissions from the only Superadmin.
+- Log sensitive RBAC changes.
+- Role/permission changes should be auditable.
 
 Do not rely only on a role name such as `"superadmin"` for security-critical logic.
 
@@ -437,14 +436,14 @@ Implement an explicit protected/system-level flag or equivalent mechanism.
 
 Implement:
 
-* Login
-* Logout
-* Session authentication
-* Password hashing
-* Password reset if appropriate
-* Remember me
-* Session expiration
-* Authentication middleware
+- Login
+- Logout
+- Session authentication
+- Password hashing
+- Password reset if appropriate
+- Remember me
+- Session expiration
+- Authentication middleware
 
 After login:
 
@@ -474,16 +473,16 @@ Superadmin should be able to manage system users.
 
 Features:
 
-* List users
-* Search users
-* Filter by role
-* Create user
-* Edit user
-* Activate/deactivate user
-* Reset password
-* Assign roles
-* Remove roles
-* View user's permissions
+- List users
+- Search users
+- Filter by role
+- Create user
+- Edit user
+- Activate/deactivate user
+- Reset password
+- Assign roles
+- Remove roles
+- View user's permissions
 
 User profile should support the appropriate school identity:
 
@@ -523,12 +522,12 @@ Student
 
 Features:
 
-* List students
-* Search
-* Filter by class
-* View profile
-* Update profile
-* Student monitoring
+- List students
+- Search
+- Filter by class
+- View profile
+- Update profile
+- Student monitoring
 
 Access must be permission-based.
 
@@ -538,11 +537,11 @@ Access must be permission-based.
 
 Implement:
 
-* Academic year
-* Classes
-* Class members
-* Homeroom teacher / Wali Kelas
-* Student-class relationships
+- Academic year
+- Classes
+- Class members
+- Homeroom teacher / Wali Kelas
+- Student-class relationships
 
 Important:
 
@@ -670,8 +669,8 @@ The source document explicitly states that Wali Kelas monitoring should not expo
 
 Implement this as both:
 
-* Permission-level authorization
-* Data-level authorization
+- Permission-level authorization
+- Data-level authorization
 
 ---
 
@@ -681,14 +680,14 @@ Guru BK can manage student disciplinary violations.
 
 Features:
 
-* Violation categories
-* Violation points
-* Record violation
-* Edit violation
-* Delete violation
-* View student violation history
-* Calculate total points
-* Filter by date/class/category
+- Violation categories
+- Violation points
+- Record violation
+- Edit violation
+- Delete violation
+- View student violation history
+- Calculate total points
+- Filter by date/class/category
 
 Example:
 
@@ -711,14 +710,14 @@ Implement student achievement management.
 
 Features:
 
-* Achievement category
-* Achievement name
-* Level
-* Date
-* Description
-* Certificate/document if required
-* Student
-* Verification status
+- Achievement category
+- Achievement name
+- Level
+- Date
+- Description
+- Certificate/document if required
+- Student
+- Verification status
 
 Possible levels:
 
@@ -742,21 +741,21 @@ Create dashboards based on the user's permissions and data scope.
 
 Show:
 
-* Counseling request status
-* Counseling history
-* Personal achievements
-* Personal violation summary
-* Follow-up information
+- Counseling request status
+- Counseling history
+- Personal achievements
+- Personal violation summary
+- Follow-up information
 
 ### Wali Kelas Dashboard
 
 Show only the assigned class:
 
-* Number of students
-* Counseling status summary
-* Achievement summary
-* Violation summary
-* Student development overview
+- Number of students
+- Counseling status summary
+- Achievement summary
+- Violation summary
+- Student development overview
 
 Do not show confidential counseling records.
 
@@ -764,24 +763,24 @@ Do not show confidential counseling records.
 
 Show:
 
-* Counseling requests
-* Upcoming counseling
-* Counseling statistics
-* Student monitoring
-* Violation statistics
-* Achievement statistics
-* Service reports
+- Counseling requests
+- Upcoming counseling
+- Counseling statistics
+- Student monitoring
+- Violation statistics
+- Achievement statistics
+- Service reports
 
 ### Kepala Sekolah Dashboard
 
 Show school-level aggregated information:
 
-* Total students
-* Counseling statistics
-* Violation statistics
-* Achievement statistics
-* Trends
-* Periodic reports
+- Total students
+- Counseling statistics
+- Violation statistics
+- Achievement statistics
+- Trends
+- Periodic reports
 
 The source requirements describe school-level monitoring for Guru BK/Kepala Sekolah and class-specific monitoring for Wali Kelas.
 
@@ -801,11 +800,11 @@ Custom date range
 
 Possible reports:
 
-* Counseling service report
-* Violation report
-* Achievement report
-* Student monitoring report
-* School summary report
+- Counseling service report
+- Violation report
+- Achievement report
+- Student monitoring report
+- School summary report
 
 Allow:
 
@@ -930,13 +929,13 @@ audit_logs
 
 Use proper:
 
-* Primary keys
-* Foreign keys
-* Indexes
-* Unique constraints
-* Nullable fields
-* Timestamps
-* Soft deletes where appropriate
+- Primary keys
+- Foreign keys
+- Indexes
+- Unique constraints
+- Nullable fields
+- Timestamps
+- Soft deletes where appropriate
 
 Avoid unnecessary duplication.
 
@@ -1009,15 +1008,15 @@ Tailwind CSS
 
 Design principles:
 
-* Responsive
-* Clean
-* Accessible
-* Minimal visual clutter
-* Clear hierarchy
-* Consistent spacing
-* Reusable components
-* Mobile-friendly
-* Desktop-friendly
+- Responsive
+- Clean
+- Accessible
+- Minimal visual clutter
+- Clear hierarchy
+- Consistent spacing
+- Reusable components
+- Mobile-friendly
+- Desktop-friendly
 
 Create reusable components:
 
@@ -1090,10 +1089,10 @@ Create a centralized authorization mechanism.
 Frontend example:
 
 ```ts
-can('student.view')
-can('student.create')
-can('counseling.approve')
-can('report.export')
+can('student.view');
+can('student.create');
+can('counseling.approve');
+can('report.export');
 ```
 
 Backend equivalent:
@@ -1142,12 +1141,12 @@ Reports
 
 Allow:
 
-* Search permissions
-* Group permissions
-* Select all module permissions
-* Clear all module permissions
-* Save changes
-* Show unsaved changes warning
+- Search permissions
+- Group permissions
+- Select all module permissions
+- Clear all module permissions
+- Save changes
+- Show unsaved changes warning
 
 ---
 
@@ -1177,14 +1176,14 @@ Frontend validation can improve UX but must never replace backend validation.
 
 Handle:
 
-* Required fields
-* Format validation
-* Duplicate records
-* Invalid IDs
-* Unauthorized access
-* Invalid status transitions
-* Invalid relationships
-* File validation if uploads are implemented
+- Required fields
+- Format validation
+- Duplicate records
+- Invalid IDs
+- Unauthorized access
+- Invalid status transitions
+- Invalid relationships
+- File validation if uploads are implemented
 
 Return user-friendly validation errors.
 
@@ -1215,18 +1214,18 @@ Never expose stack traces or sensitive internal information to end users in prod
 
 Implement appropriate security controls:
 
-* CSRF protection
-* Authentication
-* Authorization
-* Password hashing
-* Input validation
-* SQL injection prevention
-* XSS protection
-* Mass assignment protection
-* Secure file upload
-* Rate limiting where appropriate
-* Session security
-* Sensitive data access control
+- CSRF protection
+- Authentication
+- Authorization
+- Password hashing
+- Input validation
+- SQL injection prevention
+- XSS protection
+- Mass assignment protection
+- Secure file upload
+- Rate limiting where appropriate
+- Session security
+- Sensitive data access control
 
 Pay particular attention to confidentiality of counseling records.
 
@@ -1240,27 +1239,27 @@ At minimum:
 
 ### Authentication
 
-* Login
-* Logout
-* Unauthorized access
+- Login
+- Logout
+- Unauthorized access
 
 ### RBAC
 
-* Role creation
-* Permission assignment
-* Permission removal
-* Unauthorized action
-* Multi-role user
-* Superadmin protection
+- Role creation
+- Permission assignment
+- Permission removal
+- Unauthorized action
+- Multi-role user
+- Superadmin protection
 
 ### Counseling
 
-* Student submits request
-* BK approves
-* BK reschedules
-* BK records counseling
-* Student sees own history
-* Unauthorized user cannot access confidential record
+- Student submits request
+- BK approves
+- BK reschedules
+- BK records counseling
+- Student sees own history
+- Unauthorized user cannot access confidential record
 
 ### Data scope
 
@@ -1273,9 +1272,9 @@ Student A cannot access Student B
 
 ### Reports
 
-* Permission validation
-* Correct date filtering
-* PDF generation
+- Permission validation
+- Correct date filtering
+- PDF generation
 
 ---
 
@@ -1309,14 +1308,14 @@ Use secure development passwords and clearly document them.
 
 Seed:
 
-* Classes
-* Students
-* Counseling types
-* Violation categories
-* Achievement categories
-* Example counseling requests
-* Example achievements
-* Example violations
+- Classes
+- Students
+- Counseling types
+- Violation categories
+- Achievement categories
+- Example counseling requests
+- Example achievements
+- Example violations
 
 ---
 
@@ -1369,14 +1368,14 @@ If an external API or future mobile application requires an API, design the Appl
 
 Follow reasonable performance practices:
 
-* Pagination
-* Eager loading
-* Query optimization
-* Database indexing
-* Avoid N+1 queries
-* Lazy loading where appropriate
-* Cache suitable configuration/permission data
-* Avoid unnecessarily large Inertia payloads
+- Pagination
+- Eager loading
+- Query optimization
+- Database indexing
+- Avoid N+1 queries
+- Lazy loading where appropriate
+- Cache suitable configuration/permission data
+- Avoid unnecessarily large Inertia payloads
 
 The source requirements specify a target of no more than approximately 3 seconds for main page/navigation response under stable network conditions.
 
@@ -1395,9 +1394,9 @@ Mobile
 
 Prioritize usability for:
 
-* Students using smartphones
-* Teachers using laptops/desktops
-* Administrators using desktop devices
+- Students using smartphones
+- Teachers using laptops/desktops
+- Administrators using desktop devices
 
 ---
 
@@ -1536,42 +1535,42 @@ Before considering the system complete, perform a final review against these que
 
 ### Architecture
 
-* Is business logic separated from Laravel controllers?
-* Are domain/application/infrastructure/presentation responsibilities clear?
-* Can the business logic be reused by another presentation layer?
+- Is business logic separated from Laravel controllers?
+- Are domain/application/infrastructure/presentation responsibilities clear?
+- Can the business logic be reused by another presentation layer?
 
 ### RBAC
 
-* Can Superadmin create a new role without modifying source code?
-* Can Superadmin assign arbitrary permissions?
-* Can a user have multiple roles?
-* Are permissions checked server-side?
-* Are frontend permissions only used for UX?
-* Are resource-level access rules enforced?
-* Can Superadmin accidentally lock themselves out?
+- Can Superadmin create a new role without modifying source code?
+- Can Superadmin assign arbitrary permissions?
+- Can a user have multiple roles?
+- Are permissions checked server-side?
+- Are frontend permissions only used for UX?
+- Are resource-level access rules enforced?
+- Can Superadmin accidentally lock themselves out?
 
 ### Security
 
-* Can students access another student's private data?
-* Can Wali Kelas access another class?
-* Can unauthorized users access counseling records?
-* Are sensitive operations logged?
+- Can students access another student's private data?
+- Can Wali Kelas access another class?
+- Can unauthorized users access counseling records?
+- Are sensitive operations logged?
 
 ### Maintainability
 
-* Are components reusable?
-* Are queries optimized?
-* Is authorization centralized?
-* Are business rules testable?
-* Is configuration separated from code?
+- Are components reusable?
+- Are queries optimized?
+- Is authorization centralized?
+- Are business rules testable?
+- Is configuration separated from code?
 
 ### UX
 
-* Is the interface responsive?
-* Are loading states implemented?
-* Are validation errors understandable?
-* Are empty states handled?
-* Are confirmation dialogs used for destructive actions?
+- Is the interface responsive?
+- Are loading states implemented?
+- Are validation errors understandable?
+- Are empty states handled?
+- Are confirmation dialogs used for destructive actions?
 
 Do not declare the project complete until these requirements have been verified.
 

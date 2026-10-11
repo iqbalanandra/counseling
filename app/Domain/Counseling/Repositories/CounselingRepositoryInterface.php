@@ -5,7 +5,6 @@ namespace App\Domain\Counseling\Repositories;
 use App\Models\CounselingRecord;
 use App\Models\CounselingRequest;
 use App\Models\CounselingSession;
-use App\Models\CounselingType;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 

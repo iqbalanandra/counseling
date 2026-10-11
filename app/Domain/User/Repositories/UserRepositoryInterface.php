@@ -4,7 +4,6 @@ namespace App\Domain\User\Repositories;
 
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
 
 interface UserRepositoryInterface
 {

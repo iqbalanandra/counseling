@@ -47,7 +47,7 @@ class SchoolSettingController extends Controller
             'email.email' => 'Format email resmi tidak valid.',
         ]);
 
-        $setting = SchoolSetting::first() ?? new SchoolSetting();
+        $setting = SchoolSetting::first() ?? new SchoolSetting;
         $oldValues = $setting->toArray();
 
         // Handle remove logo

@@ -3,9 +3,10 @@
 namespace App\Presentation\Http\Controllers;
 
 use App\Domain\Achievement\Repositories\AchievementRepositoryInterface;
-use App\Domain\Student\Repositories\StudentRepositoryInterface;
 use App\Domain\SchoolClass\Repositories\SchoolClassRepositoryInterface;
+use App\Domain\Student\Repositories\StudentRepositoryInterface;
 use App\Models\Achievement;
+use App\Models\Student;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,7 +38,7 @@ class AchievementController extends Controller
         }
 
         // Student: only own achievements
-        if ($user->hasRole('Siswa') && !$user->isSuperAdmin()) {
+        if ($user->hasRole('Siswa') && ! $user->isSuperAdmin()) {
             $student = $this->studentRepository->findByUserId($user->id);
             $studentId = $student?->id;
         }
@@ -51,7 +52,7 @@ class AchievementController extends Controller
             allowedClassIds: $allowedClassIds
         );
 
-        $studentsQuery = \App\Models\Student::with('schoolClass')
+        $studentsQuery = Student::with('schoolClass')
             ->where('status', 'active');
 
         if ($allowedClassIds !== null) {
@@ -110,8 +111,8 @@ class AchievementController extends Controller
 
         if ($user->isWaliKelasOnly()) {
             $allowedClassIds = $user->getHomeroomClassIds();
-            $targetStudent = \App\Models\Student::find($validated['student_id']);
-            if (!$targetStudent || !in_array($targetStudent->class_id, $allowedClassIds, false)) {
+            $targetStudent = Student::find($validated['student_id']);
+            if (! $targetStudent || ! in_array($targetStudent->class_id, $allowedClassIds, false)) {
                 abort(403, 'Anda hanya dapat mencatat prestasi untuk siswa di kelas yang Anda walikan.');
             }
         }
